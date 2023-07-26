@@ -1,0 +1,60 @@
+<p-dialog  [header]="encaminhamentoResposta.status == '1' ?
+'Encaminhamento Respondido' : 'Responder Encaminhamento'"
+  position="top" [(visible)]="displayModalRetornoManual"
+  [style]="{width: '50vw'}">
+  <form #myFormRetornoManual="ngForm" autocomplete="off"  (ngSubmit)="salvar()">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+    <div class="p-col-12 p-md-9 p-fluid">
+      <label>
+        <b>Responder para: {{encaminhamento.setorOrigem}}</b>
+      </label>
+    </div>
+        <div class="p-field p-col-5">
+          <label>
+            <b>Modelo de Documento</b>
+          </label>
+          <p-dropdown inputId="modeloDocumento"
+            [options]="modeloDocumentos"
+            name="modeloDocumento"
+            [disabled]="encaminhamentoResposta.status == 1"
+            [(ngModel)]="encaminhamentoResposta.modeloDocumento" (onChange)="consultaModelo()"
+            placeholder="Selecione a opção">
+          </p-dropdown>
+    </div>
+    <div class="p-field p-col-5">
+      <label>
+        <b>Solução Satisfaz?</b>
+      </label>
+      <p-dropdown inputId="satisfaz"
+        [options]="solucaoSatisfaz"
+        [required]="true"
+        name="satisfaz"
+        [(ngModel)]="encaminhamentoResposta.satisfaz"
+        placeholder="Selecione a opção">
+      </p-dropdown>
+</div>
+
+    <div class="p-col-12 p-md-12 p-fluid">
+      <label><b>Descrição da Resposta *</b></label>
+    <p-editor
+    name="modelo"
+    [readonly]="encaminhamentoResposta.status == 1"
+    [(ngModel)]="encaminhamentoResposta.despacho"
+    [style]="{'height':'160px'}"></p-editor>
+  </div>
+    </div>
+    </div>
+    <button pButton type="submit"
+    label="Salvar"
+    class="ui-button prime-button"
+    [disabled]="myFormRetornoManual.invalid || encaminhamentoResposta.status == 2"></button>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button"
+      (click)="onCloseRetornoManual()"></button>
+    &nbsp;&nbsp;&nbsp; <b>* Campos obrigatórios</b>
+  </form>
+</p-dialog>
+
+
+
+

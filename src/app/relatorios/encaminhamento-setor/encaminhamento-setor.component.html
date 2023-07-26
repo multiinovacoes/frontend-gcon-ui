@@ -1,0 +1,102 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogRelatorio" class="np-loader">
+  <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="pesquisa()">
+<p-panel header="Relatório de Encaminhamento por Setor">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-3">
+      <label>Período</label>
+        <p-calendar [(ngModel)]="filtro.dataInicial" name="dataInicial" required dateFormat="dd/mm/yy" inputId="dataInicial"></p-calendar>
+    </div>
+    <div class="p-field p-col-12 p-md-3">
+      <label>&nbsp;</label>
+        <p-calendar [(ngModel)]="filtro.dataFinal" name="dataFinal" required dateFormat="dd/mm/yy" inputId="dataFinal"></p-calendar>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-4">
+      <label>Área</label>
+      <p-dropdown inputId="area" [options]="areas" name="area" [(ngModel)]="filtro.area"
+        placeholder="Selecione a opção" #area="ngModel">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-4">
+      <label>Status</label>
+      <p-dropdown inputId="status" [options]="statuss" name="status"  [(ngModel)]="filtro.status"
+ #status="ngModel">
+    </p-dropdown>
+</div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      [disabled]="f.invalid"
+      label="Gerar Relatório"></button>
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"  (click)="showPDF()"
+      [disabled]="f.invalid || buttonsImpressao==true"  label="PDF" icon="pi pi-file-pdf" iconPos="left"></button>
+
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"
+      icon="pi pi-file-excel"
+      iconPos="left"
+      label="Excel"
+      (click)="exportAsXLSX()"
+      [disabled]="f.invalid || buttonsImpressao==true"></button>
+    </div>
+  </div>
+</p-panel>
+<br>
+<p-card>
+  <div class="p-fluid p-formgrid p-grid">
+    <p-table [value]="atendimentoSetor"   styleClass="p-datatable-sm p-datatable-striped" sortField="area" sortMode="single" [scrollable]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="min-width:200px">Protocolo</th>
+        <th style="min-width:200px">Assunto</th>
+        <th style="min-width:200px">Natureza</th>
+        <th style="min-width:200px">Status</th>
+        <th style="min-width:200px">Data Enviado</th>
+        <th style="min-width:200px">Data Prazo</th>
+    </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-atendimento let-rowIndex="rowIndex">
+      <tr *ngIf="rowGroupMetadata[atendimento.area].index === rowIndex" [attr.rowspan]="rowGroupMetadata[atendimento.area].size">
+        <td colspan="6">
+          <span class="negrito">{{atendimento.area}} - Total: {{rowGroupMetadata[atendimento.area].size}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a  (click)="showAtendimento(atendimento.id)"><u>
+          {{atendimento.protocolo}}</u>
+          </a>
+        </td>
+        <td>
+          {{atendimento.assunto}}
+        </td>
+        <td align="center">
+          {{atendimento.natureza}}
+        </td>
+        <td align="center">
+          {{atendimento.status}}
+        </td>        
+        <td align="center">
+            {{atendimento.data}}
+          </td>
+        <td align="center">
+          {{atendimento.dataConclusao}}
+        </td>
+      </tr>
+  </ng-template>
+</p-table>
+
+  </div>
+</p-card>
+
+</form>

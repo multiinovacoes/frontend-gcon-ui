@@ -1,0 +1,105 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form autocomplete="off" (ngSubmit)="pesquisa()">
+  <div [class.hidden]="!showLoaderDialogAtendimentoPesquisa" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+<p-panel header="Lista de Atendimentos">
+
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-4">
+      <label for="solicitante">Solicitante</label>
+        <input id="solicitante" name="solicitante"
+        [(ngModel)]="filtro.solicitante"
+        type="text" pInputText>
+    </div>
+    <div class="p-field p-col-2">
+        <label>Período</label>
+        <p-inputMask type="text" id="dataInicio" mask="99/99/9999" name="dataInicio"
+        [(ngModel)]="filtro.dataInicio" ></p-inputMask>
+    </div>
+    <div class="p-field p-col-2">
+      <label>&nbsp;</label>
+      <p-inputMask type="text" id="dataFinal" mask="99/99/9999" name="dataFinal"
+      [(ngModel)]="filtro.dataFinal" ></p-inputMask>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <label for="protocolo">Nº Protocolo</label>
+        <input id="protocolo" name="protocolo"
+        [(ngModel)]="filtro.protocolo"
+        type="text" pInputText>
+    </div>
+    <div class="p-field p-col-2">
+      <label for="documento">Nº Doc. (CPF ou RG)</label>
+        <input id="documento" name="documento"
+        [(ngModel)]="filtro.documento"
+        type="text" pInputText>
+    </div>
+    <div class="p-field p-col-4">
+        <label>Palavra Chave</label>
+        <input id="palavraChave" name="palavraChave"
+        [(ngModel)]="filtro.palavraChave"
+        type="text" pInputText>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      label="Pesquisar"></button>
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"
+      (click)="novoAtendimento()"
+      label="Novo"></button>
+    </div>
+
+  </div>
+    <p-table [value]="atendimentos"
+    [paginator]="true" [rows]="filtro.itensPorPagina"
+    [lazy]="true"
+    styleClass="p-datatable-sm p-datatable-striped"
+    [totalRecords]="totalRegistros"
+    (onLazyLoad)="aoMudarPagina($event)"
+    [responsive]="true" #tabela>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:10%; font-size: small;">Protocolo</th>
+            <th style="width:30%; font-size: small;">Nome</th>
+            <th style="width:30%; font-size: small;">Assunto</th>
+            <th style="width:10%; font-size: small;">Data Criação</th>
+            <th style="width:10%; font-size: small;">Status</th>
+            <th style="width:15%; font-size: small;"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-atendimento>
+            <tr>
+                <td style="width:10%; font-size: small;">
+                  {{atendimento.numeroProtocolo}}
+                </td>
+                <td style="width:30%; font-size: small;">
+                    {{atendimento.nomeSolicitante}}
+                </td>
+                <td style="width:30%; font-size: small;">
+                  {{atendimento.descricaoAssunto}}
+                </td>
+                <td style="width:10%; font-size: small;">
+                  {{ atendimento.dataCriacao | date:'dd/MM/yyyy' }}
+                </td>
+                <td style="width:10%; font-size: small;" [style.color]="atendimento.status == 2 ?
+                'red' : 'blue'">
+                    {{atendimento.status == 2 ? 'Cancelado' : 'Ativo'}}
+                </td>
+                <td style="width:15%; font-size: small;">
+                  <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+                  (click)="editarAtendimento(atendimento.id)"></a>
+                  <button pButton icon="pi pi-trash" [disabled]="atendimento.status == 2"
+                  type="button" pTooltip="Excluir" tooltipPosition="top"
+                  [disabled]="!permissoes.includes('ROLE_CANCELAR_ATENDIMENTO')" 
+                  (click)="confirmarExclusao(atendimento)"></button>
+                  </td>
+              </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+</form>

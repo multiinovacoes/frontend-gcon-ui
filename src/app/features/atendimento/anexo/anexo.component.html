@@ -1,0 +1,55 @@
+<p-dialog header="Anexar Arquivo"
+  position="top" [(visible)]="displayModal"
+  [style]="{width: '50vw'}">
+  <form id="myFormAnexo" name="myFormAnexo" #myFormAnexo="ngForm" autocomplete="off">
+    <div class="card">
+      <span><b><i>São permitidos os formatos de arquivos .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, mp3, .mp4, .mkv. limitados a 10M</i></b></span>
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+              <p-fileUpload #fileUpload name="anexo" [auto]="true" id="anexo"
+              invalidFileSizeMessageDetail="O tamanho máximo permitido de arquivos é de 10"  [multiple]="true" 
+               [customUpload]="true" chooseLabel="Selecione o arquivo"   (uploadHandler)="carregaArquivo($event)" 
+               accept="image/*,application/*,image/.png,.jpg,.jpeg,.mp3,.mkv,.mp4" [maxFileSize]="11000000">
+              <ng-template pTemplate="content">
+                  <ul *ngIf="uploadedFiles.length">
+                      <li  *ngFor="let file of uploadedFiles">{{file.name}}</li>
+                  </ul>
+              </ng-template>
+            </p-fileUpload>
+          </div>
+          <div class="p-field p-col-12">
+          <p-table [value]="anexos" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 1px;"></th>
+                <th style="width: 100px;">Nome do arquivo</th>
+                <th style="width: 10px;"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-anexo>
+              <tr>
+                <td>
+                  <p-radioButton [(name)]="anexo.id" [(value)]="anexo.id" [(ngModel)]="idAnexoSelecao"
+                    [(inputId)]="anexo.id"></p-radioButton>
+                </td>
+                <td>
+                  {{anexo.nomeArquivo}}
+                </td>
+                <td>
+                  <button pButton type="button" (click)="download(anexo.nomeArquivo)" 
+                  icon="pi pi-arrow-circle-down"></button>&nbsp;
+                </td>              
+              </tr>
+            </ng-template>
+          </p-table>
+          </div>
+        </div>
+    </div>
+    <br>
+    <button pButton type="button" style="width: 100px;" (click)="excluirAnexo(idAnexoSelecao)"
+    icon="pi pi-external-link" [disabled]="idAnexoSelecao == null" label="Excluir"></button>&nbsp;
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onClose()"></button>
+    
+  </form>
+</p-dialog>
+

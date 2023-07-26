@@ -1,0 +1,131 @@
+<p-dialog header="Encaminhamento" id="modalEncaminhamento"
+  position="top" [(visible)]="displayModal"
+  [style]="{width: '50vw'}">
+  <form #myForm="ngForm" autocomplete="off"  (ngSubmit)="salvar()">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+    <div class="p-col-12 p-md-9 p-fluid">
+      <label>
+        <b>Selecione o setor *</b>
+      </label>
+      <p-dropdown [options]="setores"
+        inputId="setorDestino"
+        name="setorDestino"
+        required
+        [(ngModel)]="encaminhamento.setorDestino"
+        (onChange)="preencherEmail(encaminhamento.setorDestino)"
+        placeholder="Selecione a opção"
+        #setorDestino="ngModel">
+      </p-dropdown>
+    </div>
+        <div class="p-field p-col-5">
+          <label><b>Email</b></label>
+          <input id="emailEnviado" type="text"
+          name="emailEnviado"
+          required
+          [(ngModel)]="encaminhamento.emailEnviado"
+          #emailEnviado="ngModel"
+          pInputText>
+    </div>
+    <div style="padding: 25px;">
+        <p-checkbox name="copiaEmailDirigente" [(ngModel)]="encaminhamento.copiaEmailDirigente" inputId="copiaEmailDirigente"
+          [binary]="true" #copiaEmailDirigente="ngModel">
+        </p-checkbox>
+        <label>
+          <b>Enviar cópia para dirigente do setor</b>
+        </label>
+    </div>
+    <div class="p-col-9 p-md-9 p-fluid">
+      <label>
+        <b>Modelo de Documento</b>
+      </label>
+      <p-dropdown inputId="modeloDocumento" [options]="modeloDocumentos" name="modeloDocumento"
+        [(ngModel)]="encaminhamento.modeloDocumento" (onChange)="consultaModelo()"
+        placeholder="Selecione a opção">
+      </p-dropdown>
+    </div>
+    <div class="p-col-12 p-md-12 p-fluid">
+      <label><b>Descrição do Encaminhamento *</b></label>
+      <p-editor [(ngModel)]="modelo"
+       name="modelo"
+       required
+       [style]="{'height':'130px'}"></p-editor>
+    </div>
+    <div class="p-field p-col-12">
+      Abaixo estão os arquivos anexos ao seu Atendimento. Caso queira enviar algum destes junto com o e-mail de encaminhamento, basta selecioná-lo abaixo:
+      <p-table [value]="anexos" [responsive]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:5%;"></th>
+            <th style="width:95%;">Arquivo anexo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-anexo>
+          <tr>
+            <td>
+              <p-checkbox name="anexo" [(value)]="anexo.id" [(ngModel)]="encaminhamento.selectedAnexos" [(inputId)]="anexo.id"></p-checkbox>
+            </td>
+            <td>
+              {{anexo.nomeArquivo}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+    </div>
+    <button pButton type="submit" label="Salvar" [disabled]="myForm.invalid"  class="ui-button prime-button" [disabled]="myForm.invalid"></button>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onClose()"></button>
+    &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Visualiza Encaminhamento" position="top" [(visible)]="displayModalVisualiza" [style]="{width: '70vw'}" id="dialog"
+  [baseZIndex]="10000">
+
+  <p-card  styleClass="ui-card-shadow">
+    <div id="print-section">
+    <p-header>
+      <p-card header="Dados do Encaminhamento">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-2">
+          <label>Data</label>
+          <div>
+            <label>{{encaminhamento.dataEncaminhamento | date:'dd/MM/yyyy'}}</label>
+          </div>
+        </div>
+        <div class="p-field p-col-5">
+          <label>Origem</label>
+          <div>
+            <label>{{encaminhamento.descricaoSetorOrigem}}</label>
+          </div>
+        </div>
+        <div class="p-field p-col-5">
+          <label>Destino</label>
+          <div>
+            <label>{{encaminhamento.descricaoSetorDestino}}</label>
+          </div>
+        </div>
+      </div>
+    </p-card>
+    </p-header>
+    <p-card header="Descrição do Encaminhamento">
+    <div class="p-field p-col-12">
+      <div>
+        <div [innerHTML]="encaminhamento.despacho"></div>
+      </div>
+    </div>
+    </p-card>
+   </div>
+    <p-footer>
+      <button pButton type="button" label="Fechar" class="ui-button prime-button"
+      (click)="onCloseVisualiza()"></button>&nbsp;
+      <button pButton type="button" printTitle = "Impressão"
+      label="Imprimir" class="ui-button prime-button"
+      printSectionId="print-section" ngxPrint></button>
+    </p-footer>
+  </p-card>
+</p-dialog>
+
+

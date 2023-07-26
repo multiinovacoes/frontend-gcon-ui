@@ -1,0 +1,725 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" disa autocomplete="off" (ngSubmit)="salvar(f)">
+  <div [class.hidden]="!showLoaderDialog" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+  
+  <p-panel header="Atendimento&nbsp;&nbsp;&nbsp;{{atendimento.numeroProtocolo}}">
+    <app-anexo (onCallParentIncluirAnexo)="onCallParentIncluirAnexo($event)"></app-anexo>
+    <ng-template pTemplate="icons">
+      <button pButton type="button" label="Histórico da Manifestação" (click)="listaHistoricoAtendimento()"></button>
+      <button pButton type="button" label="Histórico do Usuário {{atendimento.qtdHistoricoUsuario}}" [hidden]="atendimento.qtdHistoricoUsuario === null"  (click)="listaHistoricoUsuario()"></button>
+      <button pButton type="button" label="Anexo(s) {{atendimento.qtdAnexos}}"  (click)="showAnexo()"></button>
+      <app-anexo (onCallParentAnexo)="onCallParentAnexo()"></app-anexo>
+  </ng-template>
+    <div class="card">
+      <p-tabView styleClass="tabview-custom" [activeIndex]="index" (change)="index">
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <span>Solicitante</span>
+          </ng-template>
+          <div class="card">
+            <div class="p-fluid p-formgrid p-grid">
+              <div class="p-field p-col-12 p-md-2">
+                <div class="p-field-checkbox">
+                  <p-checkbox name="sigilo" [disabled]="atendimento.camposDesabilitados"
+                    [(ngModel)]="atendimento.sigilo" inputId="sigilo" [binary]="true" #sigilo="ngModel">
+
+                  </p-checkbox>
+                  <label for="city3">Manter sigilo no atendimento</label>&nbsp;
+                </div>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="tipoUsuario">Tipo Manifest. *</label>
+                <p-dropdown inputId="tipoUsuario" [options]="tipoUsuarios" name="tipoUsuario" required="true"
+                  [disabled]="desabilitaTipoUsuario" (onChange)="habilitaCampos(f)"
+                  [(ngModel)]="atendimento.tipoUsuario"  #tipoUsuario="ngModel">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-4">
+                <label>Solicitante *</label>
+                <input pInputText type="text" name="solicitante" [(ngModel)]="atendimento.nomeSolicitante"
+                  [disabled]="atendimento.camposDesabilitados" #solicitante="ngModel" required minlength="3">
+
+                <app-message [control]="solicitante" error="required" text="Informe o nome"></app-message>
+                <app-message [control]="solicitante" error="minlength"
+                  text="Mínimo de {{ solicitante.errors?.minlength?.requiredLength }} caracteres"></app-message>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="uf">Documento</label>
+                <p-dropdown inputId="tipoDocumento" [options]="tipoDocumentos" name="tipoDocumento"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.tipoDocumento"
+                  placeholder="Selecione a opção" #tipoDocumento="ngModel">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="numeroDocumento">Nº Documento</label>
+                <input id="numeroDocumento" type="text" (change)="validaCpf()"  name="numeroDocumento"
+                  [disabled]="atendimento.camposDesabilitados || atendimento.tipoDocumento == null" [(ngModel)]="atendimento.numeroDocumento"
+                  #numeroDocumento="ngModel" pInputText>
+                <div style="color: red;" *ngIf="cpfInvalido">Informe um CPF válido</div>
+
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="dataNasci">Data Nascimento</label>
+                <p-inputMask type="text" mask="99/99/9999" name="dataNasci" [disabled]="atendimento.camposDesabilitados"
+                  [ngModel]="atendimento.dataNasci" #dataNasci="ngModel"></p-inputMask>
+              </div>
+
+
+              <div class="p-col-12 p-md-2 p-fluid">
+                <label>Estado civil</label>
+                <p-dropdown name="estadoCivil" [options]="estadosCivil" placeholder="Selecione" name="estadoCivil"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.estadoCivil"
+                  #estadoCivil="ngModel"></p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="cep">CEP</label>
+                <input id="cep" type="text" (change)="buscar()" name="cep" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.cep" #cep="ngModel" pInputText>
+              </div>
+
+
+              <div class="p-field p-col-12 p-md-4">
+                <label for="endereco">Endereço</label>
+                <input id="endereco" type="text" name="endereco" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.endereco" #endereco="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="complemento">Complemento</label>
+                <input id="complemento" type="text" name="complemento" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.complemento" #complemento="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3">
+                <label for="bairro">Bairro</label>
+                <input id="bairro" type="text" name="bairro" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.bairro" #bairro="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="cidade">Cidade</label>
+                <input id="cidade" type="text" name="cidade" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.municipio" #cidade="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="uf">UF</label>
+                <p-dropdown inputId="uf" [options]="ufs" name="uf" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.uf" placeholder="Selecione a opção" #uf="ngModel">
+                </p-dropdown>
+              </div>
+
+
+              <div class="p-field p-col-12 p-md-1">
+                <label for="dddFone">DDD</label>
+                <p-inputMask id="dddFone" type="text" name="dddFone" mask="(99)"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.dddFone" #dddFone="ngModel">
+                </p-inputMask>
+              </div>
+
+              <div class="p-field p-col-12 p-md-1">
+                <label for="fone">Fone</label>
+                <p-inputMask id="fone" type="text" mask="9999-9999" name="fone"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.fone" #fone="ngModel">
+                </p-inputMask>
+              </div>
+              <div class="p-field p-col-12 p-md-1">
+                <label for="dddCelular">DDD</label>
+                <p-inputMask id="dddCelular" type="text" name="dddCelular" mask="(99)"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.dddCelular"
+                  #dddCelular="ngModel"></p-inputMask>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="foneCelular">Fone Celular</label>
+                <p-inputMask id="foneCelular" type="text" name="foneCelular" mask="99999-9999"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.foneCelular"
+                  #foneCelular="ngModel"></p-inputMask>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3">
+                <label for="dataEntrada">Data Entrada *</label>
+                <input type="date" name="dataEntrada1" required readonly
+                  [ngModel]="atendimento.dataEntrada | date:'yyyy-MM-dd'" #dataEntrada1="ngModel"
+                  (ngModelChange)="atendimento.dataEntrada = $event" pInputText>
+
+
+              </div>
+
+              <div class="p-field p-col-12 p-md-4">
+                <label for="email">Email</label>
+                <input id="email" type="text" email name="emailOrgao" [disabled]="atendimento.camposDesabilitados"
+                  [(ngModel)]="atendimento.email" #email="ngModel" pInputText>
+                  <div *ngIf="email.invalid && email.touched"  style="color: red;">Informe um e-mail válido</div>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3">
+                <label for="origemManifestacao">Origem Manifestação *</label>
+                <p-dropdown inputId="origemMani" [options]="origensManifestacao" name="origemMani" required
+                  [(ngModel)]="atendimento.origemManifestacao" placeholder="Selecione a opção" #origemMani="ngModel">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="protocoloOrigem">Protocolo Anterior</label>
+                <input id="protocoloOrigem" type="text" name="protocoloOrigem"
+                  [disabled]="atendimento.camposDesabilitados" [(ngModel)]="atendimento.protocoloOrigem"
+                  #protocoloOrigem="ngModel" pInputText>
+              </div>
+
+              <div class="p-col-12 p-md-10 p-fluid">
+                <label>Descrição *</label>
+                <textarea rows="4" cols="50" [readonly]="this.atendimento.id != null" name="descricaoFatos" required
+                  [(ngModel)]="atendimento.descricaoFatos" #descricaoFatos="ngModel" pInputTextarea></textarea>
+
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+
+        <p-tabPanel header="Header 22" [disabled]="!permissoes.includes('ROLE_CADASTRAR_ENCAMINHAMENTO')">   
+          <ng-template pTemplate="header">
+            <span>Atendimento</span>
+          </ng-template>
+          <div class="card">
+            <div class="p-fluid p-formgrid p-grid">
+
+              <div class="p-field p-col-3">
+                <label for="usuarioCriacao">Criação - Usuário</label>
+                <input id="usuarioCriacao" type="text" name="usuarioCriacao"
+                  [(ngModel)]="atendimento.descricaoUsuario" #usuarioCriacao="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-3">
+                <label for="dataCriacao">Criação - Data</label>
+                <input type="text" name="dataCriacao" readonly
+                  [ngModel]="atendimento.dataCriacao | date: 'dd-MM-yyyy HH:mm:ss'" #dataCriacao="ngModel"
+                  (ngModelChange)="atendimento.dataCriacao = $event" pInputText>
+
+              </div>
+
+              <div class="p-field p-col-3" [hidden]="atendimento.manifestacaoConcluida==true">
+                <label for="usuarioAlteracao" >Última Alteração - Usuário</label>
+                <input id="usuarioAlteracao" type="text" name="usuarioAlteracao"
+                  [(ngModel)]="atendimento.descricaoUsuarioAlteracao" #usuarioAlteracao="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-3" [hidden]="atendimento.manifestacaoConcluida==true">
+                <label for="dataAlteracao">Última Alteração - Data</label>
+                <input type="text" name="dataAlteracao" readonly
+                  [ngModel]="atendimento.dataAlteracao | date: 'dd-MM-yyyy HH:mm:ss'" #dataAlteracao="ngModel"
+                  (ngModelChange)="atendimento.dataAlteracao = $event" pInputText>
+
+              </div>
+
+              <div class="p-field p-col-3" [hidden]="atendimento.manifestacaoConcluida==false">
+                <label for="usuarioAlteracao" >Conclusão - Usuário</label>
+                <input id="usuarioAlteracao" type="text" name="usuarioAlteracao"
+                  [(ngModel)]="atendimento.descricaoUsuarioAlteracao" #usuarioAlteracao="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-3" [hidden]="atendimento.manifestacaoConcluida==false">
+                <label for="dataConclusao">Conclusão - Data</label>
+                <input type="text" name="dataConclusao" readonly
+                  [ngModel]="atendimento.dataConclusao | date: 'dd-MM-yyyy HH:mm:ss'" #dataConclusao="ngModel"
+                  (ngModelChange)="atendimento.dataConclusao = $event" pInputText>
+
+              </div>
+
+
+              <div class="p-field p-col-12 p-md-3" [hidden]="atendimento.id == null">
+                <label for="dataPrazo">Data Prazo *</label>
+                <input type="text" name="dataPrazo" readonly [ngModel]="atendimento.dataPrazo | date:'dd-MM-yyyy'"
+                  #dataPrazo="ngModel" (ngModelChange)="atendimento.dataPrazo = $event" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3" [hidden]="atendimento.id == null">
+                <label for="dataPrazoPrevisto">Data Prazo Previsto *</label>
+                <input type="text" name="dataPrazoPrevisto" readonly
+                  [ngModel]="atendimento.dataPrazoPrevisto | date:'dd-MM-yyyy'" #dataPrazoPrevisto="ngModel"
+                  (ngModelChange)="atendimento.dataPrazoPrevisto = $event" pInputText>
+              </div>
+
+              <div class="p-col-12 p-md-12 p-fluid">
+                <label>O Que *</label>
+                <textarea rows="7" cols="50" name="descricaoOque" [(ngModel)]="atendimento.descricaoOque"
+                  #descricaoOque="ngModel" pInputTextarea></textarea>
+              </div>
+
+              <div class="p-field p-col-12 p-md-4">
+                <label for="descricaoComo">Como</label>
+                <input id="descricaoComo" type="text" name="descricaoComo" [(ngModel)]="atendimento.descricaoComo"
+                  #descricaoComo="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3">
+                <label for="descricaoQuem">Quem</label>
+                <input id="descricaoQuem" type="text" name="descricaoQuem" [(ngModel)]="atendimento.descricaoQuem"
+                  #descricaoQuem="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="descricaoQuando">Quando</label>
+                <input id="descricaoQuando" type="text" name="descricaoQuando" [(ngModel)]="atendimento.dataQuando"
+                  #descricaoQuando="ngModel" pInputText>
+              </div>
+
+              <div class="p-field p-col-12 p-md-3">
+                <label for="descricaoOnde">Onde</label>
+
+                <p-dropdown inputId="codigoBairroOcorrencia" [options]="instituicoes" name="codigoBairroOcorrencia"
+                  [(ngModel)]="atendimento.codigoBairroOcorrencia" placeholder="Selecione a opção"
+                  #codigoBairroOcorrencia="ngModel">
+                </p-dropdown>
+
+              </div>
+
+
+              <div class="p-field p-col-12 p-md-4">
+                <label for="area">Área *</label>
+                <p-dropdown inputId="area" [required]="true" [options]="areas" name="area" [(ngModel)]="atendimento.area"
+                  placeholder="Selecione a opção" #area="ngModel" (onChange)="carregarAssunto()">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-4">
+                <label for="assunto">Assunto *</label>
+                <p-dropdown inputId="assunto" [required]="true" [options]="assuntos" name="assunto"
+                  [(ngModel)]="atendimento.assunto" placeholder="Selecione a opção" #assunto="ngModel">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="natureza">Natureza *</label>
+                <p-dropdown inputId="natureza" [options]="naturezas" [required]="true" name="natureza"
+                  [(ngModel)]="atendimento.natureza" placeholder="Selecione a opção" #natureza="ngModel">
+                </p-dropdown>
+              </div>
+
+              <div class="p-field p-col-12 p-md-2">
+                <label for="priorizacao">Priorização *</label>
+                <p-dropdown inputId="priorizacao" [options]="prioridades" [required]="true" name="priorizacao"
+                  [(ngModel)]="atendimento.priorizacao" placeholder="Selecione a opção" #priorizacao="ngModel">
+                </p-dropdown>
+              </div>
+
+            </div>
+          </div>
+        </p-tabPanel>
+ 
+        <p-tabPanel header="Header III" [disabled]="abaDisabled">
+          <ng-template pTemplate="header">
+            <span>Encaminhamento</span>
+          </ng-template>
+
+          <p-table [value]="encaminhamentos"
+           styleClass="p-datatable-sm p-datatable-striped" 
+           [scrollable]="true" scrollHeight="400px"
+           scrollDirection="both">
+           [responsive]="true">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th style="width: 6%; text-align: center;">Status</th>
+                    <th style="text-align: center;">Data</th>
+                    <th style="text-align: center;">Data Prazo</th>
+                    <th style="width: 30%;">Origem</th>
+                    <th>Destino</th>
+                    <th style="text-align: center;">Recebido</th>
+                    <th style="text-align: center;">Satisfaz</th>
+                    <th style="text-align: center;">Anexo Enviado</th>
+                    <th>Usuário</th>
+                    <th>Email</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-encaminhamento>
+                <tr [style]="encaminhamento.cancelado == 1 ?
+                'background-color:Pink;' : encaminhamento.tipo == 'R' ? 'background-color:PaleGreen' : ''">
+                  <td style="width:4%">
+                    <p-radioButton [class]="encaminhamento.status == 0 ? '' :
+                        encaminhamento.cancelado == 1 ? 'inputHidden' :
+                        encaminhamento.tipo == null ? '' :
+                        'inputHidden'" [(name)]="encaminhamento.sequencial" [(value)]="encaminhamento.id"
+                    [(ngModel)]="idEncaminhamentoSelecao" [(inputId)]="encaminhamento.sequencial"></p-radioButton>
+                  </td>
+                  <td style="width: 6%; text-align: center;">
+                    <button pButton [title]="encaminhamento.tipo == null ? 'Encaminhamento Enviado' :
+                    'Retorno Encaminhamento'" (click)="encaminhamento.tipo == null ?
+                    showVisualizaDialog(encaminhamento.id) :
+                    showVisualizaResposta(encaminhamento.idResposta)" type="button" [icon]="encaminhamento.tipo == null ? 'pi pi-arrow-right'
+                    : 'pi pi-arrow-left'" [style]="encaminhamento.tipo == null ? 'border-radius: 50%;' :
+                    'border-radius: 50%; background-color:darkgreen;'"></button>
+                  </td>
+                  <td style="text-align: center; font-size: small;">
+                    {{encaminhamento.dataEncaminhamento | date:'dd/MM/yyyy'}}
+                  </td>
+                  <td style="text-align: center; font-size: small;">
+                    {{encaminhamento.dataPrazo | date:'dd/MM/yyyy'}}
+                  </td>
+                  <td style="width: 30%; font-size: small;">
+                    {{encaminhamento.descricaoSetorOrigem}}
+                  </td>
+                  <td style="font-size: small;">
+                    {{encaminhamento.descricaoSetorDestino}}
+                  </td>
+                  <td style="text-align: center;">
+                    <img
+                    [src]="encaminhamento.recebeu == 0 ? 'assets/images/enviado.png' : encaminhamento.recebeu == 1 ? 'assets/images/recebido.png' : ''">
+                  </td>
+                  <td style="text-align: center; font-size: small;">
+                    {{encaminhamento.tipo == null ? '' :
+                  encaminhamento.satisfaz == 1 ? 'Sim' :
+                  encaminhamento.satisfaz == 0 ? 'Não' : ''}}
+                  </td>
+                  <td style="text-align: center; font-size: small;">
+                    {{encaminhamento.anexoEnviado == null ? '' :
+                    encaminhamento.anexoEnviado == 1 ? 'Sim' :
+                    encaminhamento.anexoEnviado == 0 ? 'Não' : ''}}
+                  </td>                  
+                  <td style="font-size: small;">
+                    {{encaminhamento.usuario == null ? '' : encaminhamento.usuario.nome}}
+                  </td>
+                  <td style="font-size: small;">
+                    {{encaminhamento.emailEnviado == null ? '' : encaminhamento.emailEnviado}}
+                  </td>
+              </tr>
+            </ng-template>
+        </p-table>
+          <br>
+          <div [hidden]="!permissoes.includes('ROLE_CADASTRAR_ENCAMINHAMENTO') || atendimento.manifestacaoClassificada==false || atendimento.manifestacaoConcluida==true || atendimento.status ==2">
+            <p-button type="button" (click)="showPosition()" icon="pi pi-external-link" label="Incluir"></p-button>
+            &nbsp;
+
+            <button pButton type="button" style="width: 200px;" (click)="showRetornoManual(idEncaminhamentoSelecao)"
+              icon="pi pi-external-link" [disabled]="idEncaminhamentoSelecao == null"
+              label="Resposta Manual"></button>&nbsp;
+
+            <button pButton type="button" style="width: 100px;" (click)="showCancela(idEncaminhamentoSelecao)"
+              icon="pi pi-external-link" [disabled]="idEncaminhamentoSelecao == null" label="Cancelar"></button>&nbsp;
+          </div>
+          <app-encaminhamento (callParent)="onCallParent()"></app-encaminhamento>
+          <app-resposta-manual (callParent)="onCallParent()"></app-resposta-manual>
+        </p-tabPanel>
+        <p-tabPanel header="Header IIII" [disabled]="abaDisabled">
+          <ng-template pTemplate="header">
+            <span>Resposta Parcial</span>
+          </ng-template>
+          <p-table [value]="respostasParciais" styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="5" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width:4%"></th>
+                <th style="width:8%">Status</th>
+                <th style="width:50%">Descrição</th>
+                <th style="width:10%; text-align: center;">Data</th>
+                <th style="width:10%;text-align: center;">Forma Envio</th>
+                <th style="width:10%">Usuário</th>
+                <th style="width:10%">Email</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-respostaParcial>
+              <tr>
+                <td style="width:4%">
+                  <p-radioButton [(name)]="respostaParcial.id" [(value)]="respostaParcial.id"
+                    [(ngModel)]="idRespostaParcialSelecao" [(inputId)]="respostaParcial.id"></p-radioButton>
+                </td>
+                <td style="width:8%; text-align: center; font-size: small;">
+                  <button pButton title="Resposta parcial Enviada"
+                    (click)="showVisualizaRespostaParcial(respostaParcial.id)" type="button"
+                    icon="pi pi-arrow-right"></button>
+                </td>
+                <td style="width:50%; font-size: small;">
+                  <div [innerHTML]="respostaParcial.descricaoRespostaHTML"></div>
+                </td>
+                <td style="width:10%; text-align: center; font-size: small;">
+                  {{respostaParcial.dataResposta | date:'dd/MM/yyyy'}}
+                </td>
+                <td style="width:10%; text-align: center; font-size: small;">
+                  {{respostaParcial.descricaoFormaEnvio}}
+                </td>
+                <td style="width:10%; font-size: small;">
+                  {{respostaParcial.usuario.nome}}
+                </td>
+                <td style="width:10%; font-size: small;">
+                  {{respostaParcial.emailEnviado}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <br>
+          <div [hidden]="!permissoes.includes('ROLE_CADASTRAR_RESPOSTA_PARCIAL') || atendimento.manifestacaoConcluida==true || atendimento.manifestacaoClassificada==false || atendimento.status ==2">
+            <p-button type="button" (click)="showRespostaParcial()" icon="pi pi-external-link" label="Incluir">
+            </p-button>
+            &nbsp;
+
+            <button pButton type="button" style="width: 100px;" (click)="showExcluir(idRespostaParcialSelecao)"
+              icon="pi pi-external-link" [disabled]="idRespostaParcialSelecao == null" label="Excluir"></button>&nbsp;
+          </div>
+          <app-resposta-parcial (onCallParentRespostaParcial)="onCallParentRespostaParcial()"></app-resposta-parcial>
+        </p-tabPanel>
+        <p-tabPanel header="Header V" [disabled]="abaDisabled">
+          <ng-template pTemplate="header">
+            <span>Conclusão</span>
+          </ng-template>
+          <div [hidden]="!atendimento.manifestacaoConcluida">
+            <div class="p-col-12 p-md-9 p-fluid">
+              <label>Resposta do Atendimento</label>
+              <p-editor [(ngModel)]="atendimento.resposta" name="resposta" [style]="{'height':'245px', 'font-size':'small'}"></p-editor>
+            </div>
+            <div class="p-field p-col-12 p-md-3">
+              <label for="formaResposta">Forma de Conclusão *</label>
+              <p-dropdown inputId="codigoAtendimentoResposta" [options]="formasResposta"
+                name="codigoAtendimentoResposta" [(ngModel)]="atendimento.codigoAtendimentoResposta"
+                placeholder="Selecione a opção" #codigoAtendimentoResposta="ngModel">
+              </p-dropdown>
+            </div>
+          </div>
+          <div [hidden]="atendimento.manifestacaoConcluida">
+            <div class="p-col-12 p-md-9 p-fluid">
+              <label>O atendimento deverá ser concluído antes da visualização da conclusão.</label>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Header IIIII" [disabled]="abaDisabled">
+          <ng-template pTemplate="header">
+            <span>Despacho</span>
+          </ng-template>
+          <p-table [value]="despachos" [paginator]="true" styleClass="p-datatable-sm p-datatable-striped" [rows]="5" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width:4%"></th>
+                <th style="width:8%">Status</th>
+                <th style="width:33%;">Setor Origem</th>
+                <th style="width:35%;">Setor Destino</th>
+                <th style="width:10%;">Data</th>
+                <th style="width:10%;">Usuário</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-despacho>
+              <tr>
+                <td style="width:4%">
+                  <p-radioButton [(name)]="despacho.id" [(value)]="despacho.id" [(ngModel)]="idDespachoSelecao"
+                    [(inputId)]="despacho.id"></p-radioButton>
+                </td>
+                <td style="width:8%">
+                  <button pButton title="Despacho Enviado" (click)="showVisualizaDespacho(despacho.id)" type="button"
+                    icon="pi pi-arrow-right"></button>
+                </td>
+                <td style="width:33%; font-size: small;">
+                  {{despacho.descricaoSetorOrigem}}
+                </td>
+                <td style="width:35%; font-size: small;">
+                  {{despacho.descricaoSetorDestino}}
+                </td>
+                <td style="width:10%; text-align: center; font-size: small;">
+                  {{despacho.dataDespacho | date:'dd/MM/yyyy'}}
+                </td>
+                <td style="width:10%; font-size: small;">
+                  {{despacho.usuario.nome}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <br>
+          <div [hidden]="!permissoes.includes('ROLE_CADASTRAR_DESPACHO') || atendimento.manifestacaoConcluida==true || atendimento.manifestacaoClassificada==false ||  encaminhamentos == null || atendimento.status ==2">
+            <p-button type="button" (click)="showDespacho()" icon="pi pi-external-link" label="Incluir"></p-button>
+            &nbsp;
+            <button pButton type="button" style="width: 100px;" (click)="showExcluirDespacho(idDespachoSelecao)"
+              icon="pi pi-external-link" [disabled]="idDespachoSelecao == null" label="Excluir"></button>&nbsp;
+          </div>
+          <app-despacho (onCallParentDespacho)="onCallParentDespacho()"></app-despacho>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <app-atendimento-conclusao (onCallParentConclusao)="onCallParentConclusao()"></app-atendimento-conclusao>
+    <app-anexo></app-anexo>
+    <p-footer>
+      <button pButton type="button" label="Reabrir" style="width: 70px;" (click)="confirmarReabertura()"
+        [disabled]="f.invalid || atendimento.manifestacaoConcluida==false || atendimento.status==2"></button>&nbsp;
+      <button pButton type="submit" label="Salvar" style="width: 70px;"
+        [disabled]="f.invalid || atendimento.manifestacaoConcluida==true || atendimento.status==2"></button>&nbsp;
+      <button pButton type="button" label="Concluir"   style="width: 80px;" (click)="showConclusao()"
+        [disabled]="!permissoes.includes('ROLE_CONCLUIR_ATENDIMENTO') || atendimento.manifestacaoConcluida==true || atendimento.manifestacaoClassificada === false || atendimento.status==2"></button>&nbsp;
+      <button pButton type="button" label="Anexar" style="width: 70px;" (click)="showAnexo()"
+        [disabled]="atendimento.manifestacaoConcluida === true || atendimento.status === 2"></button>&nbsp;
+        <button pButton type="button" label="Observações" style="width: 120px;" (click)="showObservacao()"
+        [disabled]="atendimento.id === null || atendimento.status === 2"></button>&nbsp;
+        <button pButton type="button" label="Pesq. Satisfação" style="width: 150px;" (click)="showPesquisaSatisfacao()"
+        [disabled]="atendimento.id === null || atendimento.status === 2 || atendimento.manifestacaoConcluida==false"></button>&nbsp;
+
+      <button pButton type="button" label="Relatório"
+      [disabled]="atendimento.manifestacaoClassificada==false || atendimento.status==2"
+       style="width: 100px;" (click)="gerarRelatorio(atendimento.id)"></button>&nbsp;
+      <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="back()"></button>
+      &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+    </p-footer>
+  </p-panel>
+</form>
+
+<p-dialog header="Historico do Usuário"
+  position="top" [(visible)]="displayModalHistoricoUsuario"
+  [style]="{width: '50vw'}">
+
+  <form id="myFormHistoricoUsuario" name="myFormHistoricoUsuario" #myFormHistoricoUsuario="ngForm" autocomplete="off">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+          <div class="p-field p-col-12">
+          <p-table [value]="historicoUsuario" [responsive]="true" styleClass="p-datatable-sm p-datatable-striped">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width:25%; font-size: small;">Protocolo</th>
+                <th style="width:25%; font-size: small;">Data de Entrada</th>
+                <th style="width:25%; font-size: small;">Assunto</th>
+                <th style="width:25%; font-size: small;">Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-historico>
+              <tr>
+                <u>
+                <a (click)="gerarRelatorio(historico.atendimento)">
+                <td style="width:25%; font-size: small;">
+                  {{historico.numeroProtocolo}}
+                  
+                </td>
+              </a>
+              </u>
+                <td style="width:25%; font-size: small;">
+                  {{historico.dataEntrada}}
+                </td>
+                <td style="width:25%; font-size: small;">
+                  {{historico.assunto}}
+                </td>
+                <td style="width:25%; font-size: small;">
+                  {{historico.status}}
+                </td>
+
+              </tr>
+            </ng-template>
+          </p-table>
+          </div>
+        </div>
+    </div>
+    <br/>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onClose()"></button>
+
+  </form>
+</p-dialog>
+
+<p-dialog header="Historico da Manifestação"
+  position="top" [(visible)]="displayModalHistoricoAtendimento"
+  [style]="{width: '50vw'}"
+  [baseZIndex]="10000">
+  <div [class.hidden]="!showLoaderDialog" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+  <form id="myFormHistoricoAtendimento" name="myFormHistoricoAtendimento" #myFormHistoricoAtendimento="ngForm" autocomplete="off">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+          <div class="p-field p-col-12">
+          <p-table [value]="historicoAtendimento" [responsive]="true" styleClass="p-datatable-sm p-datatable-striped">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width:25%; font-size: small;">Data</th>
+                <th style="width:25%; font-size: small;">Hora</th>
+                <th style="width:25%; font-size: small;">Usuário</th>
+                <th style="width:25%; font-size: small;">Ação</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-historico>
+              <tr>
+                <td style="width:25%; font-size: small;">
+                  {{historico.data | date:'dd/MM/yyyy'}}
+                </td>
+                <td style="width:25%; font-size: small;">
+                  {{historico.hora | date:'HH:mm:ss'}}
+                </td>
+                <td style="width:25%; font-size: small;">
+                  {{historico.descricaoUsuario}}
+                </td>
+                <td style="width:25%; font-size: small;">
+                  {{historico.acao}}
+                </td>
+
+              </tr>
+            </ng-template>
+          </p-table>
+          </div>
+        </div>
+    </div>
+    <br/>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onCloseHistoricoAtendimento()"></button>
+
+  </form>
+</p-dialog>
+
+<p-dialog header="Observações a respeito da manifestação:  {{atendimento.numeroProtocolo}}"
+  position="top" [(visible)]="displayModalHistoricoObservacao"
+  [style]="{width: '50vw'}">
+
+  <form id="myFormHistoricoObservacoes" name="myFormHistoricoObservacoes" #myFormHistoricoObservacoes="ngForm" autocomplete="off"  (ngSubmit)="atualizarAtendimento()">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+          <div class="p-field p-col-12">
+            <textarea rows="7" cols="25" name="observacao" [(ngModel)]="atendimento.observacao"
+              #observacao="ngModel" pInputTextarea></textarea>       
+          </div>
+        </div>
+    </div>
+    <br/>
+    <button pButton type="submit" label="Salvar" class="ui-button-secondary prime-button"></button>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onCloseHistoricoObservacao()"></button>
+
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Pesquisa de Satisfação:  {{atendimento.numeroProtocolo}}"
+  position="top" [(visible)]="displayModalHistoricoPesquisaSatisfacao"
+  [style]="{width: '50vw'}">
+  <div class="card">
+  <form id="myFormHistoricoPesquisa" name="myFormHistoricoPesquisa" #myFormHistoricoPesquisa="ngForm" autocomplete="off">
+      <div class="p-fluid p-formgrid p-grid">
+          <div [hidden]="atendimento.satisfaz === 1">
+          <div class="p-field p-col-12">
+            <span *ngFor="let item of pesquisaSatisfacao">
+               
+              <div class="p-field p-col-12">
+                <label><b>{{item.descricao}}</b></label>
+              </div>
+              <div class="p-formgroup-inline">
+                <div class="p-col-12 p-lg-12">
+                  <span *ngFor="let resp of item.listaRespostaSatisfacao">
+                    <p-radioButton [name]="item.id" [value]="resp.id" [label]="resp.descricao" required
+                      [id]="'radio'+item.id" [(ngModel)]="item.idResposta" #item.id="ngModel"></p-radioButton>
+                  </span>
+
+                </div>
+              </div>
+            </span>
+            <button pButton type="button" label="Responder Pesquisa" (click)="responderPesquisaSatisfacao(myFormHistoricoPesquisa)" [disabled]="(!myFormHistoricoPesquisa.valid)"></button>
+
+          </div>
+        </div>
+        </div>
+        <div [hidden]="atendimento.satisfaz === 0">
+          <div class="p-field p-col-12">
+            <label>
+              <b>Obrigado por responder à nossa Pesquisa de Satisfação.</b>
+              Sua resposta é muito importante, pois permitirá que os nossos serviços sejam continuamente melhorados.
+            </label>
+          </div> 
+        </div>
+      </form>
+    </div>
+    <br/>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onClosePesquisaSatisfacao()"></button>
+</p-dialog>
+
+

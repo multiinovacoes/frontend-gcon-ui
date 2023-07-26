@@ -1,0 +1,241 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+<p-panel header="Empresa">
+
+  <div class="card">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-5">
+            <label for="descricao">Nome *</label>
+            <input id="descricao"
+            name="descricao"
+            type="text"
+            required
+            [(ngModel)]="orgao.descricao"
+            #descricao="ngModel"
+            pInputText>
+            <app-message [control]="descricao" error="required"
+            text="Informe uma descrição"></app-message>
+
+        </div>
+
+        <div class="p-field p-col-12 p-md-2">
+            <label for="sigla">Sigla *</label>
+            <input id="sigla" type="text"
+            name="sigla"
+            required
+            [(ngModel)]="orgao.sigla"
+            #sigla="ngModel"
+            pInputText>
+            <app-message [control]="sigla" error="required"
+            text="Informe uma sigla"></app-message>
+        </div>
+        <div class="p-field p-col-12 p-md-3">
+            <label for="cnpj">CNPJ</label>
+            <p-inputMask id="cnpj" type="text"
+            name="cnpj"
+            mask="99.999.999/9999-99"
+            [(ngModel)]="orgao.cnpj"
+            #cnpj="ngModel"
+            ></p-inputMask>
+        </div>
+        <div class="p-field p-col-12 p-md-2">
+          <label for="dataCriacao">Data Criação</label>
+
+
+
+        <p-calendar [(ngModel)]="orgao.dataCriacao"
+          [showIcon]="true" inputId="icon"
+          name="dataCriacao"
+          dateFormat="dd/mm/yy"
+          #dataCriacao="ngModel">
+        </p-calendar>
+
+
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="endereco">Endereço</label>
+        <input id="endereco" type="text"
+        name="endereco"
+        [(ngModel)]="orgao.endereco"
+        #endereco="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-1">
+        <label for="numero">Número</label>
+        <input id="numero" type="text"
+        name="numero"
+        [(ngModel)]="orgao.numero"
+        #numero="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="complemento">Complemento</label>
+        <input id="complemento" type="text"
+        name="complemento"
+        [(ngModel)]="orgao.complemento"
+        #complemento="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="bairro">Bairro</label>
+        <input id="bairro" type="text"
+        name="bairro"
+        [(ngModel)]="orgao.bairro"
+        #bairro="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-5">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" type="text"
+        name="cidade"
+        [(ngModel)]="orgao.cidade"
+        #cidade="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="uf">UF</label>
+        <p-dropdown inputId="uf"
+          [options]="ufs"
+          name="uf"
+          [(ngModel)]="orgao.uf"
+          placeholder="Selecione a opção"
+          #uf="ngModel">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="cep">CEP</label>
+        <p-inputMask id="cep" type="text"
+        name="cep"
+        mask="99.999-999"
+        [(ngModel)]="orgao.cep"
+        #cep="ngModel"
+        ></p-inputMask>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="fone">Fone</label>
+        <p-inputMask id="fone" type="text"
+        name="fone"
+        mask="(99) 99999-9999"
+        [(ngModel)]="orgao.fone"
+        #fone="ngModel"></p-inputMask>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="nomeDirigente">Nome Dirigente *</label>
+        <input id="nomeDirigente" type="text"
+        name="nomeDirigente"
+        required
+        [(ngModel)]="orgao.nomeDirigente"
+        #nomeDirigente="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="cargoDirigente">Cargo</label>
+        <input id="cargoDirigente" type="text"
+        name="cargoDirigente"
+        [(ngModel)]="orgao.cargoDirigente"
+        #cargoDirigente="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="emailDirigente">Email Dirigente *</label>
+        <input id="emailDirigente" type="text"
+        name="emailDirigente" email
+        required
+        [(ngModel)]="orgao.emailDirigente"
+        #emailDirigente="ngModel"
+        pInputText>
+
+        <app-message [control]="emailDirigente" error="email"
+        text="Informe um email válido"></app-message>
+
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="tratamentoFormal">Tratamento Formal</label>
+        <input id="tratamentoFormal" type="text"
+        name="tratamentoFormal"
+        [(ngModel)]="orgao.tratamentoFormal"
+        #tratamentoFormal="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="tratamentoInicial">Tratamento Inicial</label>
+        <input id="tratamentoInicial" type="text"
+        name="tratamentoInicial"
+        [(ngModel)]="orgao.tratamentoInicial"
+        #tratamentoInicial="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="generoDirigente">Gênero Dirigente *</label>
+        <p-dropdown name="generoDirigente" [options]="generos"
+        placeholder="Selecione"
+        [(ngModel)]="orgao.generoDirigente"></p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="generoOrgao">Gênero Órgão *</label>
+        <p-dropdown name="generoOrgao" [options]="generos"
+        placeholder="Selecione"
+        [(ngModel)]="orgao.generoOrgao"
+        ></p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="emailOrgao">Email Órgão *</label>
+        <input id="emailOrgao" type="text" email
+        name="emailOrgao"
+        [(ngModel)]="orgao.emailOrgao"
+        #emailOrgao="ngModel"
+        pInputText>
+
+        <app-message [control]="emailOrgao" error="email"
+        text="Informe um email válido"></app-message>
+
+      </div>
+
+      <div class="p-field p-col-12 p-md-3">
+        <label for="emailOrgao">Módulo</label>
+
+        <div class="p-field-checkbox">
+          <p-checkbox name="city3" value="Chicago"  inputId="city3"></p-checkbox>
+          <label for="city3">SAC</label>&nbsp;
+          <p-checkbox name="city4" value="Chicago"  inputId="city4"></p-checkbox>
+          <label for="city4">Ouvidoria</label>
+
+        </div>
+
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+      <label>Status *</label>
+      <p-dropdown name="status" [options]="status"
+        placeholder="Selecione"
+        name="status"
+        [(ngModel)]="orgao.status"
+        required></p-dropdown>
+      </div>
+
+    </div>
+</div>
+
+  <p-footer>
+    <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+    <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="back()"></button>
+    &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+  </p-footer>
+</p-panel>
+</form>

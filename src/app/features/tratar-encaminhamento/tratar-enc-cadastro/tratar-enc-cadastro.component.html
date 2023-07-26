@@ -1,0 +1,208 @@
+<div [class.hidden]="!showLoaderDialog" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+  <div id="demo">
+    <div class="esconderDiv">
+
+      <div class="p-fluid p-formgrid p-grid">
+          <div class="logo right" id="yesprint">
+              <img src="assets/images/ouvidoria-logo.png" class="logo-large">  
+          </div>
+      </div>
+      <br>
+      <div class="p-fluid p-formgrid p-grid" style="text-align: left;">
+          <div class="p-field p-col-6">
+              <label>DETALHE DA MANIFESTAÇÃO</label>
+          </div>
+          <div class="p-field p-col-6">
+              <label>GERADO EM: {{data | date:'dd/MM/yyyy HH:mm' }}</label>
+          </div>
+      </div>
+  </div>
+  <div class="p-field p-col-6">
+    <label>NÚMERO DO PROTOCOLO: <b>{{atendimento.numeroProtocolo}}</b></label>
+</div>   
+<p-panel header="Dados so Solicitante">
+          <div class="card">
+            <div class="p-fluid p-formgrid p-grid">
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Nome: </b></label>
+                <label>{{atendimento.nomeSolicitante}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Endereço: </b></label>
+                <label>{{atendimento.endereco}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Complemento: </b></label>
+                <label>{{atendimento.complemento}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Bairro: </b></label>
+                <label>{{atendimento.bairro}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>UF: </b></label>
+                <label>{{atendimento.uf}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Municipio: </b></label>
+                <label>{{atendimento.municipio}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>CEP: </b></label>
+                <label>{{atendimento.cep}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Email: </b></label>
+                <label>{{atendimento.email}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Telefone: </b></label>
+                <label>{{atendimento.fone}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Celular: </b></label>
+                <label>{{atendimento.foneCelular}}</label>
+              </div>
+
+            </div>
+        </div>
+</p-panel>
+<p-panel header="Dados do Atendimento">
+    <div class="card">
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+                <label><b>Descrição: </b></label>
+                <label>{{atendimento.descricaoOque}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-12">
+                <label><b>Como: </b></label>
+                <label>{{atendimento.descricaoComo}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-12">
+                <label><b>Quem: </b></label>
+                <label>{{atendimento.descricaoQuem}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Quando: </b></label>
+                <label>{{atendimento.descricaoQuando}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Onde: </b></label>
+                <label>{{atendimento.descricaoOnde}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Área: </b></label>
+                <label>{{atendimento.descricaoArea}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Assunto: </b></label>
+                <label>{{atendimento.descricaoAssunto}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Natureza: </b></label>
+                <label>{{atendimento.descricaoNatureza}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Priorização: </b></label>
+                <label>{{atendimento.descricaoPrioridade}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Origem: </b></label>
+                <label>{{atendimento.descricaoOrigem}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Data Entrada: </b></label>
+                <label>{{atendimento.dataEntrada | date: 'dd-MM-yyyy'}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Prazo Previsto: </b></label>
+                <label>{{atendimento.dataPrazoPrevisto | date: 'dd-MM-yyyy'}}</label>
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label><b>Prazo Resposta: </b></label>
+                <label>{{atendimento.dataPrazo | date: 'dd-MM-yyyy'}}</label>
+              </div>
+
+        </div>
+    </div>
+</p-panel>
+<p-panel header="Dados do Encaminhamento">
+    <div class="card">
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+                <label><b>Texto: </b></label>
+                <div style="text-align: justify;" [innerHTML]="atendimento.textoEncaminhamento"></div>
+            </div>
+        </div>
+    </div>
+</p-panel>
+<p-panel header="Arquivos anexos">
+    <div class="card">
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+                <p-table [value]="atendimento.anexos" [responsive]="true">
+                    <ng-template pTemplate="body" let-anexo>
+                      <tr>
+                        <td>
+                          {{anexo.nomeArquivo}}
+                        </td>
+                        <td>
+                          <button pButton type="button" (click)="download(anexo.nomeArquivo)" 
+                          icon="pi pi-arrow-circle-down"></button>&nbsp;
+                        </td>              
+                      </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</p-panel>
+</div>
+<br>
+<button pButton type="button" label="Responder" [disabled]="desabilitaBotao" (click)="showResponder()"></button>
+  <button pButton type="button" printSectionId="demo"
+      label="Imprimir" #print ngxPrint [useExistingCss]="true"></button> 
+      <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="onVoltar()"></button>
+
+
+<p-dialog header="Resposta do Encaminhamento"
+  position="top" [(visible)]="displayModalResponder"
+  [style]="{width: '50vw'}">
+
+  <form id="myFormResponder" name="myFormResponder" #myFormResponder="ngForm" autocomplete="off"  (ngSubmit)="responder()">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+          <div class="p-field p-col-12">
+            <label>Despacho</label>
+            <textarea rows="10" cols="30" name="resposta" [(ngModel)]="respostaEncaminhamento.resposta"
+              #resposta="ngModel" pInputTextarea></textarea>       
+
+          
+          </div>
+
+          <div class="p-field p-col-12">
+            <p-fileUpload name="anexo" [auto]="true"
+  
+            invalidFileSizeMessageDetail="O tamanho máximo permitido de arquivos é de 10"
+             [customUpload]="true" chooseLabel="Selecione o arquivo"  (uploadHandler)="carregaArquivo($event)"
+            [multiple]="true" accept="image/*,application/*" [maxFileSize]="5000000">
+            <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li  *ngFor="let file of uploadedFiles">{{file.name}}</li>
+                </ul>
+            </ng-template>
+          </p-fileUpload>
+        </div>        
+
+
+
+        </div>
+    </div>
+    <br/>
+    <button pButton type="submit" label="Enviar" class="ui-button-secondary prime-button"></button>
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onCloseResponder()"></button>
+
+  </form>
+</p-dialog>

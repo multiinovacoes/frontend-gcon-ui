@@ -1,0 +1,91 @@
+<div id="noprint">
+<div class="ng-header">
+    <div class="ng-header-left left">
+        <div class="toggle-menu-button left">
+            <a class="icon" (click)="toggleMenu()"><i class="fa fa-bars"></i></a>
+        </div>
+        <div class="logo right">
+            <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+            <img src="assets/images/logo-small.png" class="logo-small">
+        </div>
+    </div>
+    <div class="ng-header-right right">
+        <div class="ng-header-right-item right">
+            <a class="icon" (click)="logout()"><i class="fa fa-sign-out-alt"></i></a>
+        </div>
+        <div class="ng-header-right-item right" (click)="themeChooser.toggle($event)">
+            <a class="icon"><i class="fa fa-cog"></i></a>
+        </div>
+        <div class="ng-header-right-item right" (click)="showNotificationSidebar()">
+            <a class="icon"><i class="fa fa-bell"></i><span class="badge">5</span></a>
+        </div>
+        <div class="ng-header-right-item right" (click)="userdetails.toggle($event)">
+            <a class="icon"><span [innerHtml]="user.nome" class="user-name"></span><i class="fa fa-user"></i></a>
+        </div>
+        <div [hidden]="permissoes.includes('ROLE_TRATAR_ENCAMINHAMENTO')">
+        <div class="ng-header-right-item right">
+            <div style="padding: 10px; width: 300px;">
+                <input id="numeroProtocolo" name="numeroProtocolo"
+                [(ngModel)]="numeroProtocolo" placeholder="Pesquisar Protocolo"
+                type="text" pInputText>
+                <button pButton type="button" (click)="pesquisarProtocolo()" icon="pi pi-search" class="p-button-rounded p-button-success p-button-text"></button>
+            </div>
+      </div>
+      </div>        
+    </div>
+</div>
+</div>
+
+
+
+<!-- user detials overlay panel -->
+<p-overlayPanel #userdetails>
+    <div><b>Nome: </b><i [innerHtml]="user.nome"></i></div>
+</p-overlayPanel>
+
+
+
+
+
+<!-- notifications sidebar -->
+<p-sidebar [(visible)]="displayNotifications" position="right">
+    <div *ngFor="let notification of notifications; let i=index" class="notification-message">
+        <div><b>Message: </b><i [innerHtml]="notification.message"></i></div>
+        <div><i>Created On: </i><i [innerHtml]="notification.createdOn | date:'dd/MM/yyyy'"></i></div>
+    </div>
+</p-sidebar>
+
+<!-- theme chooser overlay panel -->
+<p-overlayPanel #themeChooser>
+    Tema:
+    <div class="ui-g">
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-teal')"
+                style="background-color: #427976;"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-rose')"
+                style="background-color: #79425a;"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-light')"
+                style="background-color: #cccccc"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-dark')"
+                style="background-color: #3b3b48"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-Turquoise')"
+                style="background-color:#04838f;"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-green')"
+                style="background-color: #1e8455;"></button>
+        </div>
+        <div class="ui-g-3">
+            <button pButton type="button" (click)="selectTheme('theme-blue')"
+                style="background-color: #2d5394;"></button>
+        </div>
+    </div>
+</p-overlayPanel>

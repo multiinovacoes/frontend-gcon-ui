@@ -1,0 +1,22 @@
+# Query: NgPrime
+# ContextLines: 1
+
+5 resultados - 3 arquivos
+
+src\index.html:
+  5    <meta charset="utf-8">
+  6:   <title>Gcon</title>
+  7    <base href="/">
+
+src\app\app.common.module.ts:
+   1  import { NgModule } from '@angular/core';
+   2: import { NgPrimeModule } from 'src/app/app.ngprime.module';
+   3  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+  14      exports: [
+  15:         NgPrimeModule,
+  16          FormsModule,
+
+src\app\app.ngprime.module.ts:
+  50  })
+  51: export class NgPrimeModule { }

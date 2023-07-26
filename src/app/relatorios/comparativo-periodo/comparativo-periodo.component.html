@@ -1,0 +1,115 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogRelatorio" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+<div class="logo right" id="yesprint">
+    <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+</div>
+
+<form #f="ngForm" autocomplete="off" (ngSubmit)="pesquisa()">
+
+    <p-panel header="Relatório Comparativo de Períodos">
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-3">
+                <label>Período 1</label>
+                <p-calendar [(ngModel)]="filtro.dataInicial" name="dataInicial" required dateFormat="dd/mm/yy"
+                    inputId="dataInicial"></p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-3">
+                <label>&nbsp;</label>
+                <p-calendar [(ngModel)]="filtro.dataFinal" name="dataFinal" required dateFormat="dd/mm/yy"
+                    inputId="dataFinal"></p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-3">
+                <label>Período 2</label>
+                <p-calendar [(ngModel)]="filtro.dataInicialAnterior" name="dataInicialAnterior" required
+                    dateFormat="dd/mm/yy" inputId="dataInicialAnterior"></p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-3">
+                <label>&nbsp;</label>
+                <p-calendar [(ngModel)]="filtro.dataFinalAnterior" name="dataFinalAnterior" required
+                    dateFormat="dd/mm/yy" inputId="dataFinalAnterior"></p-calendar>
+            </div>
+        </div>
+
+        <div id="noprint">
+            <div class="p-fluid p-formgrid p-grid">
+                <div class="p-field p-col-2">
+                    <button pButton type="submit" label="Gerar"></button>
+                </div>
+                <div class="p-field p-col-2">
+                    <button pButton type="button" printSectionId="demo" [disabled]="dados.length === 0" label="Imprimir"
+                        #print ngxPrint [useExistingCss]="true"></button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="demo">
+            <div class="tamanhoDivComparativo">
+
+                <div class="esconderDiv">
+
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="logo right" id="yesprint">
+                            <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="p-fluid p-formgrid p-grid" style="text-align: left;">
+                        <div class="p-field p-col-12">
+                            <label>RELATÓRIO COMPARATIVO DE PERÍODO</label>
+                        </div>
+                        <div class="p-field p-col-12">
+                            <label>GERADO EM: {{data | date:'dd/MM/yyyy HH:mm' }}</label>
+                        </div>
+                        <div class="p-field p-col-12">
+                            <label>PERÍODO 1 DE {{filtro.dataInicial | date:'dd/MM/yyyy' }} A {{filtro.dataFinal |
+                                date:'dd/MM/yyyy' }}</label>
+                        </div>
+                        <div class="p-field p-col-12">
+                            <label>PERÍODO 2 DE {{filtro.dataInicialAnterior | date:'dd/MM/yyyy' }} A
+                                {{filtro.dataFinalAnterior |
+                                date:'dd/MM/yyyy' }}</label>
+                        </div>
+                        <div class="p-field p-col-12">
+                            <label>USUÁRIO: {{user.nome}}</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <br><br><br>
+                <span [hidden]="dados.length === 0"><b>QUANTIDADE DE MANIFESTAÇÕES</b></span>
+
+                <div align="center" [hidden]="dados.length === 0">
+                    <fusioncharts type="column3d" [dataFormat]="dataFormat" [width]="width" [height]="height"
+                        [dataSource]="dataSource"></fusioncharts>
+                </div>
+            </div>
+            <div align="center" [hidden]="dados.length === 0">
+                <span><b>ATENDIMENTOS POR NATUREZA</b></span>
+            </div>
+
+            <table align="center" [hidden]="dados.length === 0">
+                <tr>
+                    <td>
+                        <div align="center">
+                            <label>Período 1</label>
+                            <fusioncharts type="bar3d" [dataFormat]="dataFormat" width="360" height="240"
+                                [dataSource]="dataSourcePeriodo1"></fusioncharts>
+                        </div>
+                    </td>
+                    <td>
+                        <div align="center">
+                            <label>Período 2</label>
+                            <fusioncharts type="bar3d" [dataFormat]="dataFormat" width="360" height="240"
+                                [dataSource]="dataSourcePeriodo2"></fusioncharts>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+    </p-panel>
+</form>

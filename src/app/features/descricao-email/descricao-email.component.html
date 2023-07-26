@@ -1,0 +1,25 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+<p-panel header="Descrição de Email">
+
+  <div class="p-col-12 p-md-10 p-fluid">
+  Caso desejar, descreva aqui o texto com instruções ou informações que deverá aparecer nos e-mails enviados pelo sistema.
+  </div>
+    <div class="p-col-12 p-md-9 p-fluid">
+      <label>Descrição</label>
+      <textarea rows="5" cols="30"
+      name="descricao"
+      required
+      [(ngModel)]="descricaoEmail.descricao"
+      #descricao="ngModel"
+      pInputTextarea></textarea>
+
+      <app-message [control]="descricao" error="required"
+        text="Informe uma descrição"></app-message>
+    </div>
+
+  <p-footer>
+    <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+  </p-footer>
+</p-panel>
+</form>

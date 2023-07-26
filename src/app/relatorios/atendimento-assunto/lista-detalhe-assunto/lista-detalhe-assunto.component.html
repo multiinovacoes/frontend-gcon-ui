@@ -1,0 +1,76 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialog" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+<div>
+  <div id="demo" style="width:1300px;">
+    <div class="logo right" id="yesprint">
+      <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+    </div>
+    
+  <p-panel header="Relatório de Atendimento por Assunto / Detalhe">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
+        <label>Período: {{filtro.dataInicial | date:'dd/MM/yyyy' }} - {{filtro.dataFinal | date:'dd/MM/yyyy' }}</label>
+      </div>
+    </div>
+    <div class="p-fluid p-formgrid p-grid" id="noprint">
+      <div class="p-field p-col-2">
+        <button pButton type="button" printSectionId="demo"  label="Imprimir" #print ngxPrint [useExistingCss]="true"></button>
+  
+      </div>
+      <div class="p-field p-col-2">
+        <button pButton type="button" icon="pi pi-file-excel" iconPos="left" label="Excel" (click)="exportAsXLSX()"></button>
+      </div>
+
+
+    </div>
+  
+    <div class="p-fluid p-formgrid p-grid">
+      <br><br>
+      <p-table [value]="atendimentos"
+      styleClass="p-datatable-sm p-datatable-striped"
+      [scrollable]="true"  scrollDirection="both"
+      [responsive]="true" #tabela>
+      <ng-template pTemplate="header">
+          <tr>
+              <th style="width:100px">Protocolo</th>
+              <th style="width:100px">Área</th>
+              <th style="width:100px">Assunto</th>
+              <th style="width:100px">Natureza</th>
+              <th style="width:500px">Descrição</th>
+              <th style="width:120px">Data Criação</th>
+              <th style="width:100px">Concluído</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-atendimento let-rowIndex="rowIndex">
+        <tr style="font-size: small;">
+          <td align="center" style="width:100px">
+              {{atendimento.protocolo}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.area}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.assunto}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.natureza}}
+          </td>
+          <td style="width:500px; text-align:justify;">
+            {{atendimento.descricaoFatos}}
+          </td>
+          <td align="center" style="width:120px">
+            {{atendimento.dataCriacao}}
+          </td>
+          <td align="center" style="width:100px">
+            {{atendimento.concluido}}
+          </td>
+        </tr>
+    </ng-template>
+  </p-table>
+  
+    </div>
+  </p-panel>
+  </div>
+   

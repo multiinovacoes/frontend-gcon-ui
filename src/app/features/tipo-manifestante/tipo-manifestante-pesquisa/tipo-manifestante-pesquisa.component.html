@@ -1,0 +1,55 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="pesquisa()">
+<p-panel header="Lista de Tipos de Manifestante">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-6">
+      <label for="descricao">Descrição</label>
+        <input id="descricao" name="descricao"
+        [(ngModel)]="filtro.descricao"
+        required
+        type="text" pInputText>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      [disabled]="f.invalid"
+      label="Pesquisar"></button>
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"
+      (click)="novoTipoManifestante()"
+      label="Novo"></button>
+    </div>
+
+  </div>
+    <p-table [value]="tiposManifestante" [paginator]="true" [rows]="5" styleClass="p-datatable-sm p-datatable-striped"
+    [responsive]="true" #tabela>
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="col-descricao">Descrição</th>
+            <th class="col-status">Status</th>
+            <th class="col-acoes"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tipoManifestante>
+            <tr>
+                <td class="col-descricao">
+                    {{tipoManifestante.descricao}}
+                </td>
+                <td class="col-status" [style.color]="tipoManifestante.status === 1 ?
+                'red' : 'blue'">
+                    {{tipoManifestante.status == 0 ? 'Ativo' : 'Inativo'}}
+                </td>
+                <td class="col-acoes">
+                  <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+                  (click)="editarTipoManifestante(tipoManifestante.id)"></a>
+                  <button pButton icon="pi pi-trash"
+                  type="button" pTooltip="Excluir" tooltipPosition="top"
+                  (click)="confirmarExclusao(tipoManifestante)"></button>
+                  </td>
+              </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+</form>

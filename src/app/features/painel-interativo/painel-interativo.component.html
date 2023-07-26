@@ -1,0 +1,255 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogPainelInterativo" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+<p-panel header="PAINEL DA OUVIDORIA">
+    <div class="p-col-12">
+        <label>Ano: </label>
+        <input id="ano" name="ano" [(ngModel)]="ano" type="text" pInputText>
+        <button pButton type="button" (click)="consultarPainel()" label="Pesquisar"></button>
+        <button pButton type="button" (click)="modalImpressao()" label="Impressão"></button>
+    </div>
+    <br>
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="card p-col-3">
+            <div class="card-header" style="text-align: center;">TOTAL DE MANIFESTAÇÕES</div>
+            <div class="card-body"
+                style="background-color: green; color: white; text-align: center; font-size: x-large;">
+                <p>{{qtdAtendimentoAno}}</p>
+            </div>
+        </div>
+        <div class="card p-col-3">
+            <div class="card-header" style="text-align: center;">MANIFESTAÇÕES RESPONDIDAS</div>
+            <div class="card-body"
+                style="background-color: rgb(7, 93, 206); color: white; text-align: center; font-size: x-large;">
+                <p>{{qtdAtendimentoAnoConcluidos}}</p>
+                <p>{{percentualResolvido}}%</p>
+            </div>
+        </div>
+        <div class="card p-col-2">
+            <div class="card-header" style="text-align: center;">TOTAL EM TRAMITAÇÃO</div>
+            <div class="card-body"
+                style="background-color: rgb(44, 50, 54); color: white; text-align: center; font-size: x-large;">
+                <p>{{qtdAtendimentoAnoNaoConcluidos}}</p>
+                <p>{{percentualTramitacao}}%</p>
+            </div>
+        </div>
+        <div class="card p-col-2">
+            <div class="card-header" style="text-align: center;">TRAMITAÇÃO NO PRAZO</div>
+            <div class="card-body"
+                style="background-color: rgb(1, 41, 1); color: white; text-align: center; font-size: x-large;">
+                <p>{{qtdAtendimentoAnoTramitacaoNaoVencido}}</p>
+            </div>
+        </div>
+        <div class="card p-col-2">
+            <div class="card-header" style="text-align: center;">TRAMITAÇÃO VENCIDA</div>
+            <div class="card-body"
+                style="background-color: rgb(248, 71, 17); color: white; text-align: center; font-size: x-large;">
+                <p>{{qtdAtendimentoAnoTramitacaoVencido}}</p>
+            </div>
+        </div>
+
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">PERCENTUAL POR TIPO DE MANIFESTAÇÃO</div>
+            <div>
+                <fusioncharts type="pie3d" [width]="width" [dataSource]="dataSourceNatureza">
+                </fusioncharts>
+            </div>
+        </div>
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">PERCENTUAL POR RESOLUTIVIDADE</div>
+            <div>
+                <fusioncharts type="bar3d" [width]="width" [dataSource]="dataSourceResolutividade"></fusioncharts>
+            </div>
+        </div>
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">SATISFAÇÃO (Como avalia a resposta recebida da
+                Secretaria ou Órgão??)</div>
+            <div>
+                <fusioncharts type="doughnut3d" [width]="width" [dataSource]="dataSourceAvaliacaoPesquisa">
+                </fusioncharts>
+            </div>
+        </div>
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">EVOLUÇÃO DE MANIFESTAÇÕES POR MÊS</div>
+            <div>
+                <fusioncharts type="line" [width]="width" [dataSource]="dataSourceAtendimentosAno"></fusioncharts>
+            </div>
+        </div>
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">QUANTITATIVO POR SETOR - TOP 5</div>
+            <div>
+                <fusioncharts type="column3d" [width]="width" [dataSource]="dataSourceSecretaria">
+                </fusioncharts>
+            </div>
+        </div>
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">PERCENTUAL POR ORIGEM</div>
+            <div>
+                <fusioncharts type="pie3d" [width]="width" [dataSource]="dataSourceAtendimentosOrigem"></fusioncharts>
+            </div>
+        </div>
+
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">TIPOS DE MANIFESTAÇÃO POR SETOR - TOP 5</div>
+            <div>
+                <fusioncharts type="stackedcolumn3d" [width]="width" [dataSource]="dataSourceSetorNatureza">
+                </fusioncharts>
+            </div>
+        </div>
+
+        <div class="pagebreak"> </div>
+
+        <div class="card p-col-6">
+            <div class="card-header" style="text-align: center;">QUANTITATIVO POR ASSUNTO - TOP 10</div>
+            <div>
+                <fusioncharts type="bar3d" [width]="width" [dataSource]="dataSourceAssunto">
+                </fusioncharts>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</p-panel>
+
+<p-dialog position="top" [(visible)]="displayModalImpressao" [style]="{width: '40vw'}">
+    <ng-template pTemplate="header">
+        <button pButton type="button" printSectionId="demo" label="Imprimir" #print ngxPrint
+        [useExistingCss]="true"></button>
+    </ng-template>
+        <div id="demo">
+            <div>
+
+                <div class="p-fluid p-formgrid p-grid">
+                    <div class="logo right" id="yesprint">
+                        <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+                    </div>
+                </div>
+                <br>
+
+                <div class="p-fluid p-formgrid p-grid" style="text-align: left;">
+                    <div class="p-field p-col-12">
+                        <label>PAINEL INTERATIVO</label>
+                    </div>
+                    <div class="p-field p-col-12">
+                        <label>GERADO EM: {{data | date:'dd/MM/yyyy HH:mm' }}</label>
+                    </div>
+                    <div class="p-field p-col-12">
+                        <label>ANO DE {{ano}}</label>
+                    </div>
+                    <div class="p-field p-col-12">
+                        <label>USUÁRIO: {{user.nome}}</label>
+                    </div>
+                </div>
+            </div>
+
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="card p-col-3">
+                <div class="card-header" style="text-align: center;">TOTAL DE MANIFESTAÇÕES</div>
+                <div class="card-body"
+                    style="background-color: green; color: white; text-align: center; font-size: x-large;">
+                    <p>{{qtdAtendimentoAno}}</p>
+                </div>
+            </div>
+            <div class="card p-col-3">
+                <div class="card-header" style="text-align: center;">MANIFESTAÇÕES RESPONDIDAS</div>
+                <div class="card-body"
+                    style="background-color: rgb(7, 93, 206); color: white; text-align: center; font-size: x-large;">
+                    <p>{{qtdAtendimentoAnoConcluidos}}</p>
+                    <p>{{percentualResolvido}}%</p>
+                </div>
+            </div>
+            <div class="card p-col-2">
+                <div class="card-header" style="text-align: center;">TOTAL EM TRAMITAÇÃO</div>
+                <div class="card-body"
+                    style="background-color: rgb(44, 50, 54); color: white; text-align: center; font-size: x-large;">
+                    <p>{{qtdAtendimentoAnoNaoConcluidos}}</p>
+                    <p>{{percentualTramitacao}}%</p>
+                </div>
+            </div>
+            <div class="card p-col-2">
+                <div class="card-header" style="text-align: center;">TRAMITAÇÃO NO PRAZO</div>
+                <div class="card-body"
+                    style="background-color: rgb(1, 41, 1); color: white; text-align: center; font-size: x-large;">
+                    <p>{{qtdAtendimentoAnoTramitacaoNaoVencido}}</p>
+                </div>
+            </div>
+            <div class="card p-col-2">
+                <div class="card-header" style="text-align: center;">TRAMITAÇÃO VENCIDA</div>
+                <div class="card-body"
+                    style="background-color: rgb(248, 71, 17); color: white; text-align: center; font-size: x-large;">
+                    <p>{{qtdAtendimentoAnoTramitacaoVencido}}</p>
+                </div>
+            </div>
+
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">PERCENTUAL POR TIPO DE MANIFESTAÇÃO
+                </div>
+                <div>
+                    <fusioncharts type="pie3d" width="470" [dataSource]="dataSourceNatureza">
+                    </fusioncharts>
+                </div>
+            </div>
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">PERCENTUAL POR RESOLUTIVIDADE</div>
+                <div>
+                    <fusioncharts type="bar3d" width="470" [dataSource]="dataSourceResolutividade"></fusioncharts>
+                </div>
+            </div>
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">SATISFAÇÃO (Como avalia a resposta
+                    recebida da
+                    Secretaria ou Órgão??)</div>
+                <div>
+                    <fusioncharts type="doughnut3d" width="470" [dataSource]="dataSourceAvaliacaoPesquisa">
+                    </fusioncharts>
+                </div>
+            </div>
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">EVOLUÇÃO DE MANIFESTAÇÕES POR MÊS
+                </div>
+                <div>
+                    <fusioncharts type="line" width="470" [dataSource]="dataSourceAtendimentosAno"></fusioncharts>
+                </div>
+            </div>
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">QUANTITATIVO POR SETOR - TOP 5</div>
+                <div>
+                    <fusioncharts type="column3d" width="470" [dataSource]="dataSourceSecretaria">
+                    </fusioncharts>
+                </div>
+            </div>
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">PERCENTUAL POR ORIGEM</div>
+                <div>
+                    <fusioncharts type="pie3d" width="470" [dataSource]="dataSourceAtendimentosOrigem"></fusioncharts>
+                </div>
+            </div>
+
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">TIPOS DE MANIFESTAÇÃO POR SETOR</div>
+                <div>
+                    <fusioncharts type="stackedcolumn3d" width="470" [dataSource]="dataSourceSetorNatureza">
+                    </fusioncharts>
+                </div>
+            </div>
+
+            <div class="pagebreak"> </div>
+
+            <div class="card p-col-6">
+                <div class="card-header" style="text-align: center; width: 470px;">QUANTITATIVO POR ASSUNTO - TOP 10
+                </div>
+                <div>
+                    <fusioncharts type="bar3d" width="470" [dataSource]="dataSourceAssunto">
+                    </fusioncharts>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</p-dialog>

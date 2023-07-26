@@ -1,0 +1,46 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+  <p-panel header="Modelo de Documento">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-5">
+          <label for="descricao">Nome *</label>
+          <input id="descricao" name="descricao" type="text" required [(ngModel)]="modeloDocumento.descricao"
+            #descricao="ngModel" pInputText>
+          <app-message [control]="descricao" error="required" text="Informe uma descrição"></app-message>
+        </div>
+
+        <div class="p-field p-col-12 p-md-3">
+          <label for="sigla">Tipo Modelo *</label>
+          <p-dropdown name="status" [options]="tiposModelos" placeholder="Selecione" name="tipo"
+            [(ngModel)]="modeloDocumento.tipo" required></p-dropdown>
+        </div>
+        <div class="p-field p-col-12 p-md-3">
+          <label for="status">Status *</label>
+          <p-dropdown name="status" [options]="status" placeholder="Selecione" name="status"
+            [(ngModel)]="modeloDocumento.status" required></p-dropdown>
+        </div>
+
+        <div class="p-col-12 p-md-8">
+          <label for="modelo">Modelo *</label>
+          <div class="p-fluid">
+            <p-editor [(ngModel)]="modeloDocumento.modelo"
+            name="modelo"
+            [style]="{'height':'130px'}"></p-editor>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <p-footer>
+      <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+      <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="back()"></button>
+      &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+    </p-footer>
+  </p-panel>
+</form>

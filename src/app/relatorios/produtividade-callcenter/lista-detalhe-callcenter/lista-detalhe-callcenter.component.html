@@ -1,0 +1,96 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialog" class="np-loader">
+    <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+  </div>
+<div>
+  <div id="demo" style="width:1300px;">
+    <div class="logo right" id="yesprint">
+      <img src="assets/images/ouvidoria-logo.png" class="logo-large">
+    </div>
+    
+  <p-panel header="Relatório de Produtividade Call Center / Detalhe">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label>Atendente: {{nomeAtendente}}</label>
+        </div>
+      </div>
+  
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
+        <label>Período: {{filtro.dataInicial | date:'dd/MM/yyyy' }} - {{filtro.dataFinal | date:'dd/MM/yyyy' }}</label>
+      </div>
+    </div>
+    <div class="p-fluid p-formgrid p-grid" id="noprint">
+      <div class="p-field p-col-2">
+        <button pButton type="button" printSectionId="demo"  label="Imprimir" #print ngxPrint [useExistingCss]="true"></button>
+  
+      </div>
+      <div class="p-field p-col-2">
+        <button pButton type="button" icon="pi pi-file-excel" iconPos="left" label="Excel" (click)="exportAsXLSX()"></button>
+      </div>
+
+      <div class="p-field p-col-2">
+        <button pButton type="button" icon="pi pi-file-excel" iconPos="left" label="Voltar" (click)="back()"></button>
+      </div>
+
+    </div>
+  
+    <div class="p-fluid p-formgrid p-grid">
+      <br><br>
+      <p-table [value]="atendimentos" sortField="atendimento.area" sortMode="single" 
+        styleClass="p-datatable-sm p-datatable-striped"
+        scrollDirection="both"
+        [responsive]="true" 
+        scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="atendimento.area">
+      <ng-template pTemplate="header">
+          <tr>
+              <th style="width:100px">Protocolo</th>
+              <th style="width:100px">Área</th>
+              <th style="width:100px">Assunto</th>
+              <th style="width:100px">Natureza</th>
+              <th style="width:100px">Prioridade</th>
+              <th style="width:100px">Status</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="groupheader" let-area>
+        <tr pRowGroupHeader>
+            <td colspan="5">
+                <span class="p-text-bold p-ml-2">{{area.atendimento.area}}</span>
+            </td>
+        </tr>
+    </ng-template>
+      <ng-template pTemplate="body" let-atendimento let-rowIndex="rowIndex">
+        <tr style="font-size: small;">
+          <td align="center" style="width:100px">
+            <a  (click)="showAtendimento(atendimento.id)"><u>
+              {{atendimento.protocolo}}</u>
+            </a>            
+          </td>
+          <td style="width:100px">
+            {{atendimento.area}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.assunto}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.natureza}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.prioridade}}
+          </td>
+          <td style="width:100px">
+            {{atendimento.status}}
+          </td>          
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Total de Manifestações {{atendimentos ? atendimentos.length : 0 }}
+        </div>
+    </ng-template>      
+  </p-table>
+  
+    </div>
+  </p-panel>
+  </div>
+   

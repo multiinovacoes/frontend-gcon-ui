@@ -1,0 +1,360 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+<p-panel header="Configurações do Atendimento">
+
+  <div class="p-fluid">
+    <div class="p-field p-grid">
+        <label for="qtdDiasVencer"
+        class="p-col-12 p-md-9">
+          Informe com que antecedência o sistema deverá alertar os atendimentos que estão se aproximando do vencimento
+        </label>
+        <div class="p-col-12 p-md-2">
+            <input id="qtdDiasVencer"
+            type="text"
+            name="qtdDiasVencer"
+            required
+            [(ngModel)]="configuracao.qtdDiasVencer"
+            #qtdDiasVencer="ngModel"
+            pInputText>
+
+            <app-message [control]="qtdDiasVencer" error="required"
+            text="Informe um valor"></app-message>
+
+        </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasDesvioAtendimento"
+      class="p-col-12 p-md-9">
+      A partir de quantos dias os desvios do atendimento (prazo previsto - prazo realizado) devem ser considerados?
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasDesvioAtendimento"
+          type="text"
+          name="qtdDiasDesvioAtendimento"
+          [(ngModel)]="configuracao.qtdDiasDesvioAtendimento"
+          #qtdDiasDesvioAtendimento="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasDesvioAtendimento" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasDesvioEncaminhamento"
+      class="p-col-12 p-md-9">
+      A partir de quantos dias os desvios do encaminhamento devem ser considerados?
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasDesvioEncaminhamento"
+          type="text"
+          name="qtdDiasDesvioEncaminhamento"
+          [(ngModel)]="configuracao.qtdDiasDesvioEncaminhamento"
+          #qtdDiasDesvioEncaminhamento="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasDesvioEncaminhamento" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasDesvioMarco"
+      class="p-col-12 p-md-9">
+      A partir de quantos dias os desvios do marco da solução devem ser considerados?
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasDesvioMarco"
+          type="text"
+          name="qtdDiasDesvioMarco"
+          [(ngModel)]="configuracao.qtdDiasDesvioMarco"
+          #qtdDiasDesvioMarco="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasDesvioMarco" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasEncaminhamento"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias que as unidades organizacionais deverão retornar os encaminhamentos
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasEncaminhamento"
+          type="text"
+          name="qtdDiasEncaminhamento"
+          [(ngModel)]="configuracao.qtdDiasEncaminhamento"
+          #qtdDiasEncaminhamento="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasEncaminhamento" error="required"
+          text="Informe um valor"></app-message>
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasResposta"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias para dar uma resposta a um usuário
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasResposta"
+          type="text"
+          name="qtdDiasResposta"
+          [(ngModel)]="configuracao.qtdDiasResposta"
+          #qtdDiasResposta="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasResposta" error="required"
+          text="Informe um valor"></app-message>
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasAlertaMarco"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias que desejamos que o sistema avise para cobrarmos os marcos que não foram concluídos
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasAlertaMarco"
+          type="text"
+          name="qtdDiasAlertaMarco"
+          [(ngModel)]="configuracao.qtdDiasAlertaMarco"
+          #qtdDiasAlertaMarco="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasAlertaMarco" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasAlertaEncaminhamento"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias que desejamos que o sistema avise para cobrarmos os encaminhamentos que foram enviados
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasAlertaEncaminhamento"
+          type="text"
+          name="qtdDiasAlertaEncaminhamento"
+          [(ngModel)]="configuracao.qtdDiasAlertaEncaminhamento"
+          #qtdDiasAlertaEncaminhamento="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasAlertaEncaminhamento" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdDiasExibirAtendimentosEnviados"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias que desejamos que o sistema exiba os atendimentos enviados
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdDiasExibirAtendimentosEnviados"
+          type="text"
+          name="qtdDiasExibirAtendimentosEnviados"
+          [(ngModel)]="configuracao.qtdDiasExibirAtendimentosEnviados"
+          #qtdDiasExibirAtendimentosEnviados="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdDiasExibirAtendimentosEnviados" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="qtdIntervaloDiasEmail"
+      class="p-col-12 p-md-9">
+      Informe o intevalo em dias para que o sistema envie e-mails de cobrança para os atendimentos não respondidos
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="qtdIntervaloDiasEmail"
+          type="text"
+          name="qtdIntervaloDiasEmail"
+          [(ngModel)]="configuracao.qtdIntervaloDiasEmail"
+          #qtdIntervaloDiasEmail="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="qtdIntervaloDiasEmail" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="manterSigilo"
+      class="p-col-12 p-md-9">
+      Desejo manter o sigilo dos atendimentos como padrão
+      </label>
+      <div class="p-col-12 p-md-2">
+        <p-checkbox name="manterSigilo"
+        name="manterSigilo"
+        [binary]="true"
+        [(ngModel)]="configuracao.manterSigilo"
+        #manterSigilo="ngModel"
+        inputId="manterSigilo"></p-checkbox>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="formaAtendimento"
+      class="p-col-12 p-md-9">
+      Minha forma de atendimento padrão é:
+      </label>
+      <div class="p-col-12 p-md-2">
+        <p-dropdown inputId="formaAtendimentos"
+          [options]="origemManifestacoes"
+          name="formaAtendimentos"
+          [(ngModel)]="configuracao.formaAtendimento"
+          placeholder="Selecione a opção"
+          #formaAtendimento="ngModel">
+        </p-dropdown>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="formaAtendimento"
+      class="p-col-12 p-md-9">
+      Minha prioridade padrão é:
+      </label>
+      <div class="p-col-12 p-md-2">
+        <p-dropdown inputId="prioridadesPadrao"
+          [options]="prioridadesPadrao"
+          name="prioridadesPadrao"
+          [(ngModel)]="configuracao.prioridadePadrao"
+          #prioridadePadrao="ngModel"
+          placeholder="Selecione"
+          >
+        </p-dropdown>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="exibirDetalheEncaminhamento"
+      class="p-col-12 p-md-9">
+      Desejo exibir a seção de detalhes do atendimento nos encaminhamentos
+      </label>
+      <div class="p-col-12 p-md-2">
+        <p-checkbox name="exibirDetalheEncaminhamento"
+        name="exibirDetalheEncaminhamento"
+        [binary]="true"
+        [(ngModel)]="configuracao.exibirDetalheEncaminhamento"
+        #exibirDetalheEncaminhamento="ngModel"
+        inputId="exibirDetalheEncaminhamento"></p-checkbox>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="enviarRespostaParcial"
+      class="p-col-12 p-md-9">
+      Desejo enviar respostas parciais automaticamente
+      </label>
+      <div class="p-col-12 p-md-2">
+        <p-checkbox name="enviarRespostaParcial"
+        [binary]="true"
+        name="enviarRespostaParcial"
+        [(ngModel)]="configuracao.enviarRespostaParcial"
+        #enviarRespostaParcial="ngModel"
+        inputId="enviarRespostaParcial"></p-checkbox>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="respostaParcialPadrao"
+      class="p-col-12 p-md-6">
+      Resposta parcial padrão é:
+      </label>
+      <div class="p-col-12 p-md-5">
+        <p-dropdown inputId="respostaParcialPadrao"
+          [options]="respostasParciais"
+          name="respostaParcialPadrao"
+          [(ngModel)]="configuracao.respostaParcialPadrao"
+          placeholder="Selecione a opção"
+          #respostaParcialPadrao="ngModel">
+        </p-dropdown>
+    </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="numeroDiasProrrogarAtendimento"
+      class="p-col-12 p-md-9">
+      Informe o número máximo de dias que os atendimentos podem ser prorrogados
+      </label>
+      <div class="p-col-12 p-md-2">
+          <input id="numeroDiasProrrogarAtendimento"
+          type="text"
+          name="numeroDiasProrrogarAtendimento"
+          [(ngModel)]="configuracao.numeroDiasProrrogarAtendimento"
+          #numeroDiasProrrogarAtendimento="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="numeroDiasProrrogarAtendimento" error="required"
+          text="Informe um valor"></app-message>
+
+
+
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="respostaParcialPadraoProrrogacao"
+      class="p-col-12 p-md-6">
+        Resposta parcial padrão para prorrogação de prazo é:
+      </label>
+      <div class="p-col-12 p-md-5">
+        <p-dropdown inputId="respostaParcialPadraoProrrogacao"
+          [options]="respostasParciais"
+          name="respostaParcialPadraoProrrogacao"
+          [(ngModel)]="configuracao.respostaParcialPadraoProrrogacao"
+          placeholder="Selecione a opção"
+          #respostaParcialPadraoProrrogacao="ngModel">
+        </p-dropdown>
+    </div>
+    </div>
+
+  </div>
+
+  <p-footer>
+    <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+  </p-footer>
+</p-panel>
+</form>

@@ -1,0 +1,85 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogRelatorio" class="np-loader">
+  <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="pesquisa()">
+<p-panel header="Relatório de Atendimento por Período">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-2">
+      <label>Período</label>
+        <p-calendar [(ngModel)]="filtro.dataInicial" name="dataInicial" required dateFormat="dd/mm/yy" inputId="dataInicial"></p-calendar>
+    </div>
+    <div class="p-field p-col-12 p-md-2">
+      <label>&nbsp;</label>
+        <p-calendar [(ngModel)]="filtro.dataFinal" name="dataFinal" required dateFormat="dd/mm/yy" inputId="dataFinal"></p-calendar>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      [disabled]="f.invalid"
+      label="Gerar Relatório"></button>
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"  (click)="showPDF()"
+      [disabled]="f.invalid || buttonsImpressao==true"  label="PDF" icon="pi pi-file-pdf" iconPos="left"></button>
+
+    </div>
+    <div class="p-field p-col-1">
+      <button pButton type="button"
+      icon="pi pi-file-excel"
+      iconPos="left"
+      label="Excel"
+      (click)="exportAsXLSX()"
+      [disabled]="f.invalid || buttonsImpressao==true"></button>
+    </div>
+  </div>
+</p-panel>
+<br>
+<p-card>
+  <div class="p-fluid p-formgrid p-grid">
+    <p-table [value]="atendimentoPeriodo"   styleClass="p-datatable-sm p-datatable-striped" sortField="area" sortMode="single" [scrollable]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="min-width:200px">Protocolo</th>
+            <th style="min-width:200px">Data Entrada</th>
+            <th style="min-width:200px">Assunto</th>
+            <th style="min-width:200px">Natureza</th>
+            <th style="min-width:200px">Status</th>
+            <th style="min-width:200px">Data Conclusão</th>
+            <th style="min-width:200px">Data Prazo</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-atendimento let-rowIndex="rowIndex">
+      <tr>
+        <td>
+          <a  (click)="showAtendimento(atendimento.id)"><u>
+          {{atendimento.protocolo}}</u>
+          </a>
+        </td>
+        <td align="center">
+          {{atendimento.data}}
+        </td>
+        <td>
+          {{atendimento.assunto}}
+        </td>
+        <td align="center">
+          {{atendimento.natureza}}
+        </td>
+        <td align="center">
+          {{atendimento.status}}
+        </td>
+        <td align="center">
+          {{atendimento.dataConclusao}}
+        </td>
+        <td align="center">
+            {{atendimento.dataPrazo}}
+          </td>        
+      </tr>
+  </ng-template>
+</p-table>
+
+  </div>
+</p-card>
+
+</form>

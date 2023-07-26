@@ -1,0 +1,136 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+<p-panel header="Setor">
+
+  <div class="card">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-5">
+            <label for="descricao">Nome *</label>
+            <input id="descricao"
+            name="descricao"
+            type="text"
+            required
+            [(ngModel)]="setor.descricao"
+            #descricao="ngModel"
+            pInputText>
+            <app-message [control]="descricao" error="required"
+            text="Informe uma descrição"></app-message>
+
+        </div>
+
+        <div class="p-field p-col-12 p-md-2">
+            <label for="sigla">Sigla</label>
+            <input id="sigla" type="text"
+            name="sigla"
+            [(ngModel)]="setor.sigla"
+            #sigla="ngModel"
+            pInputText>
+
+            <app-message [control]="sigla" error="required"
+            text="Informe uma sigla"></app-message>
+        </div>
+
+        <div class="p-field p-col-12 p-md-3">
+          <label for="emailSetor">Email Setor *</label>
+          <input id="emailSetor" type="text" email
+          name="emailSetor"
+          [(ngModel)]="setor.emailSetor"
+          #emailSetor="ngModel"
+          required
+          pInputText>
+
+          <app-message [control]="emailSetor" error="email"
+          text="Informe um email válido"></app-message>
+
+        </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="fone">Fone</label>
+        <p-inputMask id="fone" type="text"
+        name="fone"
+        mask="(99) 99999-9999"
+        [(ngModel)]="setor.fone"
+        #fone="ngModel"></p-inputMask>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="nomeDirigente">Nome Dirigente</label>
+        <input id="nomeDirigente" type="text"
+        name="nomeDirigente"
+        required
+        [(ngModel)]="setor.nomeDirigente"
+        #nomeDirigente="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="cargoDirigente">Cargo</label>
+        <input id="cargoDirigente" type="text"
+        name="cargoDirigente"
+        [(ngModel)]="setor.cargoDirigente"
+        #cargoDirigente="ngModel"
+        pInputText>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="emailDirigente">Email Dirigente</label>
+        <input id="emailDirigente" type="text"
+        name="emailDirigente" email
+        required
+        [(ngModel)]="setor.emailDirigente"
+        #emailDirigente="ngModel"
+        pInputText>
+
+        <app-message [control]="emailDirigente" error="email"
+        text="Informe um email válido"></app-message>
+
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="tratamentoFormal">Tratamento Formal</label>
+        <input id="tratamentoFormal" type="text"
+        name="tratamentoFormal"
+        [(ngModel)]="setor.tratamentoFormal"
+        #tratamentoFormal="ngModel"
+        pInputText>
+      </div>
+
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="generoDirigente">Gênero Dirigente *</label>
+        <p-dropdown name="generoDirigente" [options]="generos"
+        placeholder="Selecione"
+        [(ngModel)]="setor.generoDirigente"></p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+        <label for="generoSetor">Gênero Setor *</label>
+        <p-dropdown class="p-message-error"
+         name="generoSetor" [options]="generos"
+        placeholder="Selecione"
+        required
+        [(ngModel)]="setor.generoSetor"
+        #generoSetor="ngModel"
+        ></p-dropdown>
+        <div class="p-message-error" *ngIf="generoSetor.invalid && generoSetor.touched">Informe o gênero do setor</div>
+      </div>
+
+      <div class="p-field p-col-12 p-md-2">
+      <label>Status *</label>
+      <p-dropdown name="status" [options]="status"
+        placeholder="Selecione"
+        name="status"
+        [(ngModel)]="setor.status"
+        required></p-dropdown>
+      </div>
+
+    </div>
+</div>
+
+  <p-footer>
+    <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+    <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="back()"></button>
+    &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+  </p-footer>
+</p-panel>
+</form>

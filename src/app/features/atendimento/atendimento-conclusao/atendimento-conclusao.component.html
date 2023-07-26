@@ -1,0 +1,73 @@
+<p-dialog header="Conclusão do Atendimento"
+  position="top" [(visible)]="displayModal"
+  [style]="{width: '50vw'}">
+  <form #myForm="ngForm" autocomplete="off"  (ngSubmit)="salvar()">
+    <div class="card">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label><b>Forma de Resposta *</b></label>
+          <p-dropdown inputId="formaResposta" [options]="formasResposta" name="formaResposta" [disabled]="desabilitaFormaResposta"
+            required    (onChange)="habilitaCampoEmail(atendimentoConclusao.formaResposta)"
+            [(ngModel)]="atendimentoConclusao.formaResposta" placeholder="Selecione a opção" #formaResposta="ngModel">
+          </p-dropdown>
+        </div>
+        <div class="p-field p-col-6"
+        [hidden]="habilitaEmail">
+          <label><b>Email</b></label>
+          <input id="email" type="text"
+          name="email"
+          [(ngModel)]="atendimentoConclusao.email"
+          #email="ngModel"
+          pInputText>
+        </div>
+
+      <div class="p-col-12 p-md-12 p-fluid" [hidden]="textoExecutor == null">
+        <label><b>Resposta do Executor *</b></label>
+        <p-editor [(ngModel)]="textoExecutor"
+        name="textoExecutor"
+        [style]="{'height':'130px'}"></p-editor>
+      </div>
+    <div class="p-col-9 p-md-9 p-fluid">
+      <label>
+        <b>Modelo de Documento</b>
+      </label>
+      <p-dropdown inputId="modeloDocumento" [options]="modeloDocumentos" name="modeloDocumento"
+        [(ngModel)]="atendimentoConclusao.modeloDocumento" (onChange)="consultaModelo(atendimentoConclusao.modeloDocumento)"
+        placeholder="Selecione a opção">
+      </p-dropdown>
+    </div>
+    <div class="p-col-12 p-md-12 p-fluid">
+      <label><b>Providência *</b></label>
+      <p-editor [(ngModel)]="atendimentoConclusao.textoProvidencia"
+       name="textoProvidencia" required
+       [style]="{'height':'130px'}"></p-editor>
+    </div>
+    <div class="p-field p-col-12">
+      Abaixo estão os arquivos anexos ao seu Atendimento. Caso queira enviar algum destes junto com o e-mail de encaminhamento, basta selecioná-lo abaixo:
+      <p-table [value]="anexos" [responsive]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:5%;"></th>
+            <th style="width:95%;">Arquivo anexo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-anexo>
+          <tr>
+            <td>
+              <p-checkbox name="anexo" [(value)]="anexo.id" [(ngModel)]="atendimentoConclusao.selectedAnexos" [(inputId)]="anexo.id"></p-checkbox>
+            </td>
+            <td>
+              {{anexo.nomeArquivo}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+    </div>
+    <button pButton type="submit" label="Salvar"  class="ui-button prime-button" [disabled]="myForm.invalid"></button>&nbsp;
+    <button pButton type="button" label="Fechar" class="ui-button-secondary prime-button" (click)="onClose()"></button>
+    &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+  </form>
+</p-dialog>
+

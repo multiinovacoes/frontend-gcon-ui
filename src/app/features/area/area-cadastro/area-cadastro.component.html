@@ -1,0 +1,30 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+<p-panel header="Área">
+    <div class="p-col-12 p-md-9 p-fluid">
+      <label>Descrição *</label>
+      <input pInputText type="text" name="descricao"
+        [(ngModel)]="area.descricao"
+        #descricao="ngModel" required minlength="3">
+
+        <app-message [control]="descricao" error="required"
+          text="Informe uma descrição"></app-message>
+        <app-message [control]="descricao" error="minlength"
+          text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres"></app-message>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-fluid">
+      <label>Status *</label>
+      <p-dropdown name="status" [options]="status"
+        placeholder="Selecione"
+        [(ngModel)]="area.status"
+        required></p-dropdown>
+    </div>
+
+  <p-footer>
+    <button pButton type="submit" label="Salvar" class="ui-button prime-button" [disabled]="f.invalid"></button>&nbsp;
+    <button pButton type="button" label="Voltar" class="ui-button-secondary prime-button" (click)="back()"></button>
+    &nbsp;&nbsp;&nbsp; * Campos obrigatórios
+  </p-footer>
+</p-panel>
+</form>

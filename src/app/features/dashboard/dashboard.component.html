@@ -1,0 +1,124 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogDashboard" class="np-loader">
+  <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+
+<div [hidden]="permissoes.includes('ROLE_TRATAR_ENCAMINHAMENTO')">
+<div class="p-fluid p-formgrid p-grid">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                      Novos Atendimentos</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{qtdNovosAtendimentos}}</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-envelope fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Encaminhamentos Recebidos</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{qtdEncaminhamentosRecebidos}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-reply-all fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Quantidade de Manifestações
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{qtdAtendimentosMes}}</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar"
+                                        style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                        aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-flag fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                          Manifestações Concluidas</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{qtdAtendimentosMesConcluidos}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="p-fluid p-formgrid p-grid">
+
+    <div class="col-xl-6">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+              <div align="center">
+                <fusioncharts type="pie3d"
+                [width]="width"
+                [height]="height"
+                [dataSource]="dataSourceNatureza"></fusioncharts>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="col-xl-6">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+              <div align="center">
+                <fusioncharts
+                  [width]="width"
+                  [height]="height"
+                  type="Column3d" [dataSource]="dataSourceSecretaria"></fusioncharts>
+              </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+

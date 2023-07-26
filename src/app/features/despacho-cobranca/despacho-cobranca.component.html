@@ -1,0 +1,128 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<div [class.hidden]="!showLoaderDialogCobranca" class="np-loader">
+  <p-progressSpinner strokeWidth="5"></p-progressSpinner>
+</div>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="pesquisa()">
+<p-panel header="Cobrança de Encaminhamentos">
+  <div class="p-fluid p-formgrid p-grid">
+  <div class="p-field p-col-12 p-md-4">
+    <label><b>* O período não pode ser superior a 90 dias</b></label>
+  </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-2">
+      <label>Período encaminhado</label>
+        <p-calendar [(ngModel)]="filtro.dataInicial" name="dataInicial" required dateFormat="dd/mm/yy" inputId="dataInicial"></p-calendar>
+    </div>
+    <div class="p-field p-col-12 p-md-2">
+      <label>&nbsp;</label>
+        <p-calendar [(ngModel)]="filtro.dataFinal" name="dataFinal" required dateFormat="dd/mm/yy" inputId="dataFinal"></p-calendar>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-4">
+      <label>Área</label>
+      <p-dropdown inputId="area" [options]="setores" name="area" [(ngModel)]="despachoCobranca.setor"
+        placeholder="Selecione a opção" #area="ngModel">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid"> 
+    <div class="p-field p-col-12 p-md-6">
+      <label style="background-color:Pink;"><font color="background-color:Pink;">Prazo Vencido </font></label> 
+      &nbsp;&nbsp;
+      <p-checkbox name="prazoVencido"  
+      [(ngModel)]="filtro.prazoVencido" inputId="prazoVencido" [binary]="true" #prazoVencido="ngModel">
+
+    </p-checkbox>
+    <label> &nbsp;&nbsp;&nbsp;&nbsp;Prazo a Vencer </label> 
+    <p-checkbox name="prazoVencer"  
+    [(ngModel)]="filtro.prazoVencer" inputId="prazoVencer" [binary]="true" #prazoVencer="ngModel">
+
+  </p-checkbox>
+
+  <label> &nbsp;&nbsp;&nbsp;&nbsp;Último despacho enviado a 15 dias atrás</label>   &nbsp;&nbsp;
+  <p-checkbox name="despacho15diasatras"  
+  [(ngModel)]="filtro.despacho15diasatras" inputId="despacho15diasatras" [binary]="true" #despacho15diasatras="ngModel">
+
+</p-checkbox>
+
+    </div>
+  </div>  
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      [disabled]="f.invalid"
+      label="Consultar"></button>
+    </div>
+  </div>
+</p-panel>
+<br>
+<p-card>
+  <div class="p-fluid p-formgrid p-grid">
+    <p-table [value]="atendimentoArea"     [(selection)]="despachoCobranca.selectedAtendimentos" [rowHover]="true" dataKey="id"  styleClass="p-datatable-sm p-datatable-striped" sortField="area" sortMode="single" [scrollable]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:10px">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th style="width:100px">Protocolo</th>
+            <th style="width:100px; text-align: center;">Data Encaminhamento</th>
+            <th style="width:200px">Assunto</th>
+            <th style="width:100px; text-align: center;">Data Prazo</th>
+            <th style="width:100px; text-align: center;">Qtd Cobranças Enviadas</th>
+            <th style="width:100px; text-align: center;">Data Última Cobrança</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-atendimento let-rowIndex="rowIndex">
+      <tr [style]="atendimento.prazoVencido === 'S' ?
+                'background-color:Pink;' : ''">
+        <td style="width:10px">
+            <p-tableCheckbox  [value]="atendimento"  [(inputId)]="atendimento.id"></p-tableCheckbox>
+        </td>
+        <td style="width:100px">
+          <a (click)="showAtendimento(atendimento.id)"><u>
+          {{atendimento.protocolo}}</u>
+          </a>
+        </td>
+        <td  style="width:100px; text-align: center;">
+          {{atendimento.data}}
+        </td>
+        <td style="width:200px"> 
+          {{atendimento.assunto}}
+        </td>
+        <td style="width:100px; text-align: center;">
+          {{atendimento.dataPrazo}}
+        </td>
+        <td style="width:100px; text-align: center;">
+          {{atendimento.qtdCobrancas}}
+        </td>
+        <td style="width:100px; text-align: center;">
+          {{atendimento.dataUltimoDespacho}}
+        </td>                
+
+      </tr>
+  </ng-template>
+</p-table>
+
+
+  </div>
+  <br>
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-3">
+      <button pButton type="button" (click)="enviarCobranca()"
+      [disabled]="f.invalid || atendimentoArea.length === 0"
+      label="Enviar Cobrança"></button>
+    </div>
+    <div class="p-field p-col-2">
+      <button pButton type="button"
+      icon="pi pi-file-excel"
+      iconPos="left"
+      label="Excel"
+      (click)="exportAsXLSX()"
+      [disabled]="f.invalid || atendimentoArea.length === 0"></button>
+    </div>
+  </div>
+</p-card>
+
+</form>

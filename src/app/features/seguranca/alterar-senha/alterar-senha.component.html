@@ -1,0 +1,37 @@
+<app-header-breadcrumb></app-header-breadcrumb>
+<form #f="ngForm" autocomplete="off" (ngSubmit)="atualizar()">
+<p-panel header="Alteração de Senha">
+
+
+  <div class="p-fluid p-formgrid p-grid">
+
+    <div class="p-field p-col-12 p-md-12">
+        <label style="font-size: medium;">* A senha deverá obedecer aos seguintes critérios: Deve ter no mínimo 6 caracteres e conter números e/ou letras.</label>
+    </div>
+  
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="descricao">Senha Antiga</label>
+        <input id="senhaAntiga" name="senhaAntiga"
+        [(ngModel)]="alterarSenha.senhaAntiga"
+        required
+        type="text" pInputText>
+    </div>
+    <div class="p-field p-col-12 p-md-6">
+        <label for="descricao">Senha Nova</label>
+          <input id="senhaNova" name="senhaNova"
+          required minlength="6"
+          [(ngModel)]="alterarSenha.senhaNova"
+          required
+          type="text" pInputText>
+      </div>
+  </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-2">
+      <button pButton type="submit"
+      [disabled]="f.invalid"
+      label="Alterar Senha"></button>
+    </div>
+  </div>
+</p-panel>
+</form>
